@@ -6,34 +6,39 @@ using System.Threading.Tasks;
 
 namespace DbFaker.UnitTests.Lib
 {
-    public class FakeDbDialect : IDatabaseDialect
+    public class FakeDbDialect : DbDialect
     {
-        public void DeleteAll(Stack<RecordIdentifier> recordIdentifiers)
+        public FakeDbDialect(string connectionString)
+           : base(connectionString)
         {
         }
 
-        public void Dispose()
+        public override void DeleteAll(Stack<RecordIdentifier> recordIdentifiers)
         {
         }
 
-        public TableColumnInfo[] GetTableSchemaInfo(string tableName)
-        {
-            return null;
-        }
-
-        public IDictionary<string, object> GetValuesFromDatabase(string tableName, string name, object identityValue)
+        public override TableColumnInfo[] GetTableSchemaInfo(string tableName)
         {
             return null;
         }
 
-        public IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
+        public override IDictionary<string, object> GetValuesFromDatabase(string tableName, string name, object identityValue)
         {
             return null;
         }
 
-        public bool RecordExists(string tableName, string columnName, object value)
+        public override IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
+        {
+            return null;
+        }
+
+        public override bool RecordExists(string tableName, string columnName, object value)
         {
             return false;
+        }
+
+        public override void Dispose()
+        {
         }
     }
 }

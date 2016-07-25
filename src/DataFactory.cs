@@ -6,9 +6,9 @@ using System.Linq;
 namespace DbFaker
 {
     public class DataFactory<TDialect>
-        where TDialect : class, IDatabaseDialect, new()
+        where TDialect : DbDialect
     {
-        private readonly IDatabaseDialect _databaseDialect;
+        private readonly IDbDialect _databaseDialect;
         private readonly IDictionary<string, IEnumerable<TableColumnInfo>> _tableInfoCache;
         private readonly Stack<RecordIdentifier> _generatedRecordIdentifiers;
 
@@ -18,13 +18,13 @@ namespace DbFaker
             _generatedRecordIdentifiers = new Stack<RecordIdentifier>();
 
             string connectionString = (ConfigurationManager.ConnectionStrings[nameOrConnectionString] != null) ?
-                                            ConfigurationManager.ConnectionStrings[nameOrConnectionString].ConnectionString : 
+                                            ConfigurationManager.ConnectionStrings[nameOrConnectionString].ConnectionString :
                                             nameOrConnectionString;
-            
-            _databaseDialect = (TDialect)Activator.CreateInstance(typeof(TDialect), connectionString);
+
+            _databaseDialect = (IDbDialect)Activator.CreateInstance(typeof(TDialect), connectionString);
         }
 
-        public DataFactory(IDatabaseDialect databaseDialect)
+        public DataFactory(IDbDialect databaseDialect)
         {
             _tableInfoCache = new Dictionary<string, IEnumerable<TableColumnInfo>>();
             _generatedRecordIdentifiers = new Stack<RecordIdentifier>();
@@ -55,7 +55,7 @@ namespace DbFaker
 
             if (!fromDatabase)
             {
-                return _databaseDialect.Insert(tableName, tableSchemaInfo, generatedValues);
+                return InsertValuesInDatabase(tableName, tableSchemaInfo, generatedValues);
             }
 
             return generatedValues;
@@ -172,13 +172,18 @@ namespace DbFaker
                 case ColumnType.String:
                     return Any.String(column.MaxLength);
                 case ColumnType.Int:
-                    return Any.Int(1, 10 ^ column.Scale);
+                    long maxValue = 10 ^ column.Scale - 2;
+                    if (maxValue > int.MaxValue)
+                    {
+                        return Any.Long(1, column.Scale - 2);
+                    }
+                    return Any.Int(1, 10 ^ column.Scale - 2);
                 case ColumnType.Decimal:
                     return Any.Decimal();
                 case ColumnType.Double:
                     return Any.Double();
                 case ColumnType.Long:
-                    return Any.Long(1, 10 ^ column.Scale);
+                    return Any.Long(1, 10 ^ column.Scale - 2);
                 case ColumnType.Boolean:
                     return Any.Boolean();
                 case ColumnType.Guid:

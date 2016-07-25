@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbFaker
 {
-    public interface IDatabaseDialect : IDisposable
+    public interface IDbDialect : IDisposable
     {
         TableColumnInfo[] GetTableSchemaInfo(string tableName);
 

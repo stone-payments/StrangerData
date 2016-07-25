@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace DbFaker.SqlServer
 {
-    internal class SqlServerDialect : IDatabaseDialect
+    internal class SqlServerDialect : DbDialect
     {
         private readonly SqlConnection _sqlConnection;
 
         public SqlServerDialect(string connectionString)
+            : base(connectionString)
         {
             _sqlConnection = new SqlConnection(connectionString);
 
@@ -22,7 +23,7 @@ namespace DbFaker.SqlServer
             }
         }
 
-        public TableColumnInfo[] GetTableSchemaInfo(string tableName)
+        public override TableColumnInfo[] GetTableSchemaInfo(string tableName)
         {
             string sql = @"SELECT
 	OUTCOLUMNS.NAME                                         Name, 
@@ -132,7 +133,7 @@ ORDER BY OUTCOLUMNS.column_id
             throw new Exception("Table not found!");
         }
 
-        public IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
+        public override IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
         {
             bool hasIdentity = tableSchemaInfo.Any(t => t.IsIdentity);
 
@@ -175,7 +176,7 @@ ORDER BY OUTCOLUMNS.column_id
             return values;
         }
 
-        public bool RecordExists(string tableName, string columnName, object value)
+        public override bool RecordExists(string tableName, string columnName, object value)
         {
             string existRecordSql = string.Format("SELECT 1 FROM {0} WHERE {1} = @Value", tableName, columnName);
             SqlCommand existRecordCmd = new SqlCommand(existRecordSql, _sqlConnection);
@@ -185,7 +186,7 @@ ORDER BY OUTCOLUMNS.column_id
             return Convert.ToBoolean(existRecordCmd.ExecuteScalar());
         }
 
-        public IDictionary<string, object> GetValuesFromDatabase(string tableName, string columnName, object value)
+        public override IDictionary<string, object> GetValuesFromDatabase(string tableName, string columnName, object value)
         {
             string getRecordSql = string.Format("SELECT DbGener123.* FROM {0} AS DbGener123 WHERE {1} = @Value", tableName, columnName);
 
@@ -216,7 +217,7 @@ ORDER BY OUTCOLUMNS.column_id
             throw new InvalidOperationException("Record not found.");
         }
 
-        public void DeleteAll(Stack<RecordIdentifier> recordIdentifiers)
+        public override void DeleteAll(Stack<RecordIdentifier> recordIdentifiers)
         {
             if (recordIdentifiers.Any())
             {
@@ -239,7 +240,7 @@ ORDER BY OUTCOLUMNS.column_id
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _sqlConnection.Dispose();
         }
