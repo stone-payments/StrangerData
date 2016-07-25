@@ -28,7 +28,7 @@ namespace DbFaker.UnitTests
             var tableSchemaInfo = new[]
                             {
                                 new TableColumnInfo { ColumnType = ColumnType.String, Name = "MyColumn1", MaxLength = 20 },
-                                new TableColumnInfo { ColumnType = ColumnType.Int, Name = "MyColumn2", Scale = 5 },
+                                new TableColumnInfo { ColumnType = ColumnType.Int, Name = "MyColumn2", Precision = 5 },
                             };
 
             _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(testTable))))
@@ -77,7 +77,7 @@ namespace DbFaker.UnitTests
                                     Name = "MyForeignTableId", IsForeignKey = true,
                                     ForeignKeyTable = referencedTableName,
                                     ForeignKeyColumn = "MyForeignId",
-                                    Scale = 10
+                                    Precision = 10
                                 }
                             };
 
@@ -86,7 +86,7 @@ namespace DbFaker.UnitTests
                                 new TableColumnInfo {
                                     ColumnType = ColumnType.Int,
                                     Name = "MyForeignId",
-                                    Scale = 10
+                                    Precision = 10
                                 }
             };
 
@@ -145,7 +145,7 @@ namespace DbFaker.UnitTests
                                     Name = "MyForeignTableId", IsForeignKey = true,
                                     ForeignKeyTable = referencedTableName,
                                     ForeignKeyColumn = "MyForeignId",
-                                    Scale = 10
+                                    Precision = 10
                                 }
                             };
 
@@ -154,7 +154,7 @@ namespace DbFaker.UnitTests
                                 new TableColumnInfo {
                                     ColumnType = ColumnType.Int,
                                     Name = "MyForeignId",
-                                    Scale = 10
+                                    Precision = 10
                                 }
             };
 

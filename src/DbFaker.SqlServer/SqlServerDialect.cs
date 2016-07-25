@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DbFaker.SqlServer
 {
-    internal class SqlServerDialect : DbDialect
+    public class SqlServerDialect : DbDialect
     {
         private readonly SqlConnection _sqlConnection;
 
@@ -105,6 +105,7 @@ ORDER BY OUTCOLUMNS.column_id
                             tableColumnInfo.ColumnType = ColumnType.String;
                             break;
                         case "INT":
+                        case "SMALLINT":
                             tableColumnInfo.ColumnType = ColumnType.Int;
                             break;
                         case "UNIQUEIDENTIFIER":
@@ -138,7 +139,7 @@ ORDER BY OUTCOLUMNS.column_id
             bool hasIdentity = tableSchemaInfo.Any(t => t.IsIdentity);
 
             StringBuilder insertStatementBuilder = new StringBuilder()
-                                                    .AppendFormat("INSERT INTO {0}", tableName)
+                                                    .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
                                                     .AppendFormat("({0})", string.Join(",", values.Keys))
                                                     .AppendFormat(" VALUES ({0});", string.Join(",", values.Keys.Select(c => "@" + c)));
             // .AppendFormat(" SELECT SCOPE_IDENTITY();")
@@ -178,7 +179,7 @@ ORDER BY OUTCOLUMNS.column_id
 
         public override bool RecordExists(string tableName, string columnName, object value)
         {
-            string existRecordSql = string.Format("SELECT 1 FROM {0} WHERE {1} = @Value", tableName, columnName);
+            string existRecordSql = string.Format("SELECT 1 FROM {0} WHERE {1} = @Value", SanitizeTableName(tableName), columnName);
             SqlCommand existRecordCmd = new SqlCommand(existRecordSql, _sqlConnection);
 
             existRecordCmd.Parameters.Add(new SqlParameter { ParameterName = "@Value", Value = value });
@@ -227,7 +228,7 @@ ORDER BY OUTCOLUMNS.column_id
                     {
                         RecordIdentifier recordIdentifier = recordIdentifiers.Pop();
 
-                        string deleteStmt = string.Format("DELETE FROM {0} WHERE {1} = @Id", recordIdentifier.TableName, recordIdentifier.ColumnName);
+                        string deleteStmt = string.Format("DELETE FROM {0} WHERE {1} = @Id", SanitizeTableName(recordIdentifier.TableName), recordIdentifier.ColumnName);
 
                         SqlCommand deleteCommand = new SqlCommand(deleteStmt, _sqlConnection, transaction);
                         deleteCommand.Parameters.Add(new SqlParameter { ParameterName = "@Id", Value = recordIdentifier.IdentifierValue });
@@ -238,6 +239,14 @@ ORDER BY OUTCOLUMNS.column_id
                     transaction.Commit();
                 }
             }
+        }
+
+        private string SanitizeTableName(string tableName)
+        {
+            if (tableName.Contains('.'))
+                return string.Format("[{0}].[{1}]", tableName.Split('.')[0], tableName.Split('.')[1]);
+            else
+                return string.Format("[{0}]", tableName);
         }
 
         public override void Dispose()

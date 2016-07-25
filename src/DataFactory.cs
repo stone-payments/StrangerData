@@ -141,7 +141,15 @@ namespace DbFaker
                         }
                         else
                         {
-                            generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                            var existingGeneratedRelatedRecord = _generatedRecordIdentifiers.FirstOrDefault(t => t.TableName == column.ForeignKeyTable && t.ColumnName == column.ForeignKeyColumn);
+                            if (existingGeneratedRelatedRecord != null)
+                            {
+                                generatedValues[column.Name] = existingGeneratedRelatedRecord.IdentifierValue;
+                            }
+                            else
+                            {
+                                generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                            }
                         }
                     }
                     else
@@ -172,18 +180,18 @@ namespace DbFaker
                 case ColumnType.String:
                     return Any.String(column.MaxLength);
                 case ColumnType.Int:
-                    long maxValue = 10 ^ column.Scale - 2;
+                    long maxValue = 10 ^ column.Precision - 2;
                     if (maxValue > int.MaxValue)
                     {
-                        return Any.Long(1, column.Scale - 2);
+                        return Any.Long(1, column.Precision - 2);
                     }
-                    return Any.Int(1, 10 ^ column.Scale - 2);
+                    return Any.Int(1, 10 ^ column.Precision - 2);
                 case ColumnType.Decimal:
                     return Any.Decimal();
                 case ColumnType.Double:
                     return Any.Double();
                 case ColumnType.Long:
-                    return Any.Long(1, 10 ^ column.Scale - 2);
+                    return Any.Long(1, 10 ^ column.Precision - 2);
                 case ColumnType.Boolean:
                     return Any.Boolean();
                 case ColumnType.Guid:

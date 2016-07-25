@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DbFaker.SqlServer</id>
-    <version>0.0.3</version>
+    <version>0.0.7</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stonepayments/DbFaker</projectUrl>
@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
 	<dependencies>
-		<dependency id="DbFaker" version="0.0.1" />
+		<dependency id="DbFaker" version="0.0.2" />
 	</dependencies>
   </metadata>
   <files>
