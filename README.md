@@ -85,7 +85,3 @@ To delete all generated records, just run:
 dataFactory.TearDown();
 ...
 ```
-
-## Contributors ##
-- @anckizes
-- @pedrohfernandes
