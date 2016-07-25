@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>DbFaker</id>
+    <version>0.0.1</version>
+    <authors>Pedro Henrique B. Fernandes</authors>
+    <owners>Buy4</owners>
+    <projectUrl>https://github.com/stonepayments/DbFaker</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/stonepayments/DbFaker/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <title>DbFaker</title>
+    <summary>A .NET database populator for testing purposes.</summary>
+    <description>Automatically fills your testing database with random generated data.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>fixture data-builder fake-data test-data integration-test</tags>
+  </metadata>
+  <files>
+    <file src="src/bin/Release/DbFaker.dll" target="lib\net45" />
+  </files>
+</package>

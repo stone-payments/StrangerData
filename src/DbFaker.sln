@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFaker", "DbFaker.csproj", "{17FB002A-2433-42B4-A7B2-486A812F2B12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{01D90837-1509-48E3-99EC-4235E0446E95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFaker.UnitTests", "..\DbFaker.UnitTests\DbFaker.UnitTests.csproj", "{90B17280-52A2-4CA6-8384-FDCC689F6FDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialects", "Dialects", "{309B2D73-E072-4E99-8C95-5EF7CD8EEDC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbFaker.SqlServer", "DbFaker.SqlServer\DbFaker.SqlServer.csproj", "{D84D22AB-719F-430D-87B6-63541A29DC70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17FB002A-2433-42B4-A7B2-486A812F2B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FB002A-2433-42B4-A7B2-486A812F2B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FB002A-2433-42B4-A7B2-486A812F2B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FB002A-2433-42B4-A7B2-486A812F2B12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90B17280-52A2-4CA6-8384-FDCC689F6FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90B17280-52A2-4CA6-8384-FDCC689F6FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90B17280-52A2-4CA6-8384-FDCC689F6FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90B17280-52A2-4CA6-8384-FDCC689F6FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D84D22AB-719F-430D-87B6-63541A29DC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84D22AB-719F-430D-87B6-63541A29DC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84D22AB-719F-430D-87B6-63541A29DC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D84D22AB-719F-430D-87B6-63541A29DC70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{90B17280-52A2-4CA6-8384-FDCC689F6FDE} = {01D90837-1509-48E3-99EC-4235E0446E95}
+		{D84D22AB-719F-430D-87B6-63541A29DC70} = {309B2D73-E072-4E99-8C95-5EF7CD8EEDC0}
+	EndGlobalSection
+EndGlobal
