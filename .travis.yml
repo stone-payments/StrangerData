@@ -1,0 +1,10 @@
+language: csharp
+solution: ./src/DbFaker.sln
+
+install:
+  - nuget restore ./src/DbFaker.sln
+  - nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
+
+script:
+  - xbuild /p:Configuration=Release ./src/DbFaker.sln
+  - mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./DbFaker.UnitTests/bin/Release/DbFaker.UnitTests.dll
