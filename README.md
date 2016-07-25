@@ -29,19 +29,19 @@ var dataFactory = new DataFactory<SqlServer>("MyConnectionString");
 Consider the example schema:
 
 #### User Table  
-|Column|Data Type|PK|FK|
-|--|:--:|:--:|:--:|
-|Id|INT|True|False|
-|Name|VARCHAR(20)|False|False|
-|Email|VARCHAR(50)|False|False|
-|Age|INT|False|False|
-|GroupId|INT|False|Group(Id)|
+| Column | Data Type | PK | FK |
+| -- | -- | -- | -- |
+| Id | INT | True | False |
+| Name | VARCHAR(20) | False | False |
+| Email | VARCHAR(50) | False | False |
+| Age | INT | False | False |
+| GroupId| INT| False| Group(Id) |
 
 #### Group Table  
-|Column|Data Type|PK|FK|
-|--|:--:|:--:|:--:|
-|Id|INT|True|False|
-|Name|VARCHAR(20)|False|False|
+| Column | Data Type | PK | FK |
+| -- | -- | -- | -- |
+| Id | INT | True | False |
+| Name | VARCHAR(20) | False | False |
 
 ### 1. Creates a single record:
 ```csharp
