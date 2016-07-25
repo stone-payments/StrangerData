@@ -30,6 +30,7 @@ Consider the example schema:
 
 #### User Table
 
+
 | Column | Data Type | PK | FK |
 | -- | -- | -- | -- |
 | Id | INT | True | False |
@@ -38,12 +39,15 @@ Consider the example schema:
 | Age | INT | False | False |
 | GroupId | INT | False | Group(Id) |
 
+
 #### Group Table
+
 
 | Column | Data Type | PK | FK |
 | -- | -- | -- | -- |
 | Id | INT | True | False |
 | Name | VARCHAR(20) | False | False |
+
 
 ### 1. Creates a single record:
 ```csharp
