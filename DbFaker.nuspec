@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>DbFaker</id>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stonepayments/DbFaker</projectUrl>
