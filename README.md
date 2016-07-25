@@ -32,7 +32,7 @@ Consider the example schema:
 
 
 | Column | Data Type | PK | FK |
-| -- | -- | -- | -- |
+| --- | --- | --- | --- |
 | Id | INT | True | False |
 | Name | VARCHAR(20) | False | False |
 | Email | VARCHAR(50) | False | False |
@@ -44,7 +44,7 @@ Consider the example schema:
 
 
 | Column | Data Type | PK | FK |
-| -- | -- | -- | -- |
+| --- | --- | --- | --- |
 | Id | INT | True | False |
 | Name | VARCHAR(20) | False | False |
 
