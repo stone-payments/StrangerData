@@ -141,7 +141,15 @@ namespace DbFaker
                         }
                         else
                         {
-                            generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                            var existingGeneratedRelatedRecord = _generatedRecordIdentifiers.FirstOrDefault(t => t.TableName == column.ForeignKeyTable && t.ColumnName == column.ForeignKeyColumn);
+                            if (existingGeneratedRelatedRecord != null)
+                            {
+                                generatedValues[column.Name] = existingGeneratedRelatedRecord.IdentifierValue;
+                            }
+                            else
+                            {
+                                generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                            }
                         }
                     }
                     else
