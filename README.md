@@ -28,7 +28,8 @@ var dataFactory = new DataFactory<SqlServer>("MyConnectionString");
 
 Consider the example schema:
 
-#### User Table  
+#### User Table
+
 |Column|Data Type|PK|FK|
 |--|--|--|--|
 |Id|INT|True|False|
@@ -37,7 +38,8 @@ Consider the example schema:
 |Age|INT|False|False|
 |GroupId|INT|False|Group(Id)|
 
-#### Group Table  
+#### Group Table
+
 |Column|Data Type|PK|FK|
 |--|--|--|--|
 |Id|INT|True|False|
