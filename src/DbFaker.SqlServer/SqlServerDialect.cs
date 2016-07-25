@@ -159,7 +159,7 @@ ORDER BY OUTCOLUMNS.column_id
                 {
                     Direction = System.Data.ParameterDirection.Input,
                     ParameterName = "@" + column,
-                    Value = values[column]
+                    Value = values[column] ?? DBNull.Value
                 });
             }
 
