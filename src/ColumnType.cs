@@ -8,15 +8,19 @@ namespace StrangerData
 {
     public enum ColumnType
     {
-        String,
-        Int,
-        Decimal,
-        Double,
-        Long,
+        Binary,
         Boolean,
-        Guid,
+        Byte,
         Date,
         Datetime,
-        Unsuported
+        Decimal,
+        Double,
+        Guid,
+        Int,
+        Long,
+        String,
+        TimeSpan,
+        Unsuported,
+        Xml
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using StrangerData;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace StrangerData.SqlServer
 {
@@ -100,10 +100,38 @@ ORDER BY OUTCOLUMNS.column_id
 
                     switch (((string)dr["ColumnType"]).ToUpper())
                     {
-                        case "CHAR":
+                        case "REAL":
+                        case "SMALLMONEY":
+                        case "MONEY":
+                        case "NUMERIC":
+                        case "DECIMAL":
+                            tableColumnInfo.ColumnType = ColumnType.Decimal;
+                            break;
+                        case "NCHAR":
+                        case "NVARCHAR":
+                        case "TEXT":
+                        case "NTEXT":
                         case "VARCHAR":
                             tableColumnInfo.ColumnType = ColumnType.String;
                             break;
+                        case "ROWVERSION":
+                        case "FILESTREAM":
+                        case "VARBINARY":
+                        case "IMAGE":
+                            tableColumnInfo.ColumnType = ColumnType.Byte;
+                            break;
+                        case "FLOAT":
+                            tableColumnInfo.ColumnType = ColumnType.Double;
+                            break;
+                        case "BINARY":
+                            tableColumnInfo.ColumnType = ColumnType.Binary;
+                            break;
+                        case "BIT":
+                            tableColumnInfo.ColumnType = ColumnType.Boolean;
+                            break;
+                        case "CHAR":
+                            break;
+                        case "TINYINT":
                         case "INT":
                         case "SMALLINT":
                             tableColumnInfo.ColumnType = ColumnType.Int;
@@ -113,13 +141,14 @@ ORDER BY OUTCOLUMNS.column_id
                             break;
                         case "UNIQUEIDENTIFIER":
                             tableColumnInfo.ColumnType = ColumnType.Guid;
-                            break;
-                        case "DECIMAL":
-                            tableColumnInfo.ColumnType = ColumnType.Decimal;
-                            break;
+                            break; ;
                         case "DATE":
                             tableColumnInfo.ColumnType = ColumnType.Date;
                             break;
+                        case "TIME":
+                        case "SMALLDATETIME":
+                        case "DATETIMEOFFSET":
+                        case "DATETIME2":
                         case "DATETIME":
                             tableColumnInfo.ColumnType = ColumnType.Datetime;
                             break;
