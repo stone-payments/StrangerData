@@ -28,22 +28,26 @@ var dataFactory = new DataFactory<SqlServer>("MyConnectionString");
 
 Consider the example schema:
 
-#### User Table
+#### Person Table
 
-|Column|Data Type|PK|FK|
-|--|--|--|--|
-|Id|INT|True|False|
-|Name|VARCHAR(20)|False|False|
-|Email|VARCHAR(50)|False|False|
-|Age|INT|False|False|
-|GroupId|INT|False|Group(Id)|
 
-#### Group Table
+| Column | Data Type | PK | FK |
+| --- | --- | --- | --- |
+| Id | INT | True | False |
+| Name | VARCHAR(20) | False | False |
+| Email | VARCHAR(50) | False | False |
+| Age | INT | False | False |
+| TeamId | INT | False | Team(Id) |
 
-|Column|Data Type|PK|FK|
-|--|--|--|--|
-|Id|INT|True|False|
-|Name|VARCHAR(20)|False|False|
+
+#### Team Table
+
+
+| Column | Data Type | PK | FK |
+| --- | --- | --- | --- |
+| Id | INT | True | False |
+| Name | VARCHAR(20) | False | False |
+
 
 ### 1. Creates a single record:
 ```csharp
@@ -85,7 +89,3 @@ To delete all generated records, just run:
 dataFactory.TearDown();
 ...
 ```
-
-## Contributors ##
-- @anckizes
-- @pedrohfernandes
