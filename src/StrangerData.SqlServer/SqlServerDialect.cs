@@ -108,6 +108,9 @@ ORDER BY OUTCOLUMNS.column_id
                         case "SMALLINT":
                             tableColumnInfo.ColumnType = ColumnType.Int;
                             break;
+                        case "BIGINT":
+                            tableColumnInfo.ColumnType = ColumnType.Long;
+                            break;
                         case "UNIQUEIDENTIFIER":
                             tableColumnInfo.ColumnType = ColumnType.Guid;
                             break;
