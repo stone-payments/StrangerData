@@ -1,25 +1,25 @@
-# DbFaker - A .NET database populator for testing purposes
+# StrangerData - A .NET database populator for testing purposes
 ===
 
 Travis: [![Travis](https://travis-ci.org/stone-pagamentos/DbFaker.svg?branch=master)](https://travis-ci.org/stone-pagamentos/DbFaker)
 
 ## Project Description ##
-DbFaker is a tool designed to automatically fills your database with random data to make your unit/integration tests faster.  
+StrangerData is a tool designed to automatically fills your database with random data to make your unit/integration tests faster.  
 The generator will auto maps all foreign keys and generates records to related tables.
 
 ## Getting Started ##
-1. Install DbFaker with NuGet Package Manager:
-> Install-Package DbFaker
+1. Install StrangerData with NuGet Package Manager:
+> Install-Package StrangerData
 
 2. Install your database dialect, example:
-> Install-Package DbFaker.SqlServer
+> Install-Package StrangerData.SqlServer
 
 3. Configure the required connection strings.
 
 To start generating your test data, create a new DataFactory object:
 ```csharp
-using DbFaker;
-using DbFaker.SqlServer;
+using StrangerData;
+using StrangerData.SqlServer;
 ...
 var dataFactory = new DataFactory<SqlServer>("MyConnectionString");
 ```
@@ -67,7 +67,7 @@ The method will creates an record in the group table, and associates it to the c
 So you can specify your custom values. Do following:
 ```csharp
 User user = dataFactory.CreateOne("dbo.User", t => {
-    t.WithValue("Name", "Will");
+    t.WithValue("Name", "Will Byers");
 });
 ```
 
@@ -89,3 +89,5 @@ To delete all generated records, just run:
 dataFactory.TearDown();
 ...
 ```
+
+We suggest to use the TearDown() method inside yor Finally scope. This way it will run even if you code crashes on running, avoiding to have dirty data on your database.
