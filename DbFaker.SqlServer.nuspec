@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>DbFaker.SqlServer</id>
+    <id>StrangerData.SqlServer</id>
     <version>0.0.7</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
-    <projectUrl>https://github.com/stonepayments/DbFaker</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/stonepayments/DbFaker/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/stonepayments/StrangerData</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/stonepayments/StrangerData/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <title>DbFaker - SQL Server Dialect</title>
-    <summary>MS SQL Server Dialect for DbFaker data generator.</summary>
-    <description>MS SQL Server Dialect for DbFaker data generator.</description>
+    <title>StrangerData - SQL Server Dialect</title>
+    <summary>MS SQL Server Dialect for StrangerData data generator.</summary>
+    <description>MS SQL Server Dialect for StrangerData data generator.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
 	<dependencies>
-		<dependency id="DbFaker" version="0.0.2" />
+		<dependency id="StrangerData" version="0.0.2" />
 	</dependencies>
   </metadata>
   <files>
-    <file src="src/DbFaker.SqlServer/bin/Release/DbFaker.SqlServer.dll" target="lib\net45" />
+    <file src="src/StrangerData.SqlServer/bin/Release/StrangerData.SqlServer.dll" target="lib\net45" />
   </files>
 </package>
