@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
-namespace DbFaker
+namespace StrangerData
 {
     public class DataFactory<TDialect>
         where TDialect : DbDialect
