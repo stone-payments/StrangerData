@@ -89,3 +89,5 @@ To delete all generated records, just run:
 dataFactory.TearDown();
 ...
 ```
+
+We suggest to use the TearDown() method inside yor Finally scope. This way it will run even if you code crashes on running, avoiding to have dirty data on your database.
