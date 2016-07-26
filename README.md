@@ -75,7 +75,7 @@ The dictionary will contains:
 ```json
 {
   "Id": "Generated User's Id",
-  "Name": "Will",
+  "Name": "Will Byers",
   "Email": "Random string",
   "Age": "Random integer number",
   "GroupId": "Id from generated group record"
