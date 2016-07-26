@@ -21,7 +21,7 @@ To start generating your test data, create a new DataFactory object:
 using StrangerData;
 using StrangerData.SqlServer;
 ...
-var dataFactory = new DataFactory<SqlServer>("MyConnectionString");
+var dataFactory = new DataFactory<SqlServerDialect>("MyConnectionString");
 ```
 
 ## Usage ##
