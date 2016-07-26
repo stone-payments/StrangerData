@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StrangerData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbFaker.UnitTests.Lib
+namespace StrangerData.UnitTests.Lib
 {
     public class FakeDbDialect : DbDialect
     {

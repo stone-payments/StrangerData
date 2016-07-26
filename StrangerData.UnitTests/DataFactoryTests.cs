@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using FluentAssertions;
-using DbFaker;
-using DbFaker.UnitTests.Lib;
+using StrangerData.UnitTests.Lib;
 
-namespace DbFaker.UnitTests
+namespace StrangerData.UnitTests
 {
     public class DataFactoryTests
     {
