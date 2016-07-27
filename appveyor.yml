@@ -1,0 +1,41 @@
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+# enable patching of AssemblyInfo.* files
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "0.0.{build}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  parallel: true                  # enable MSBuild parallel builds
+  project: src/StrangerData.sln   # path to Visual Studio solution or project
+  publish_nuget: true             # package projects with .nuspec files and push to artifacts
+
+
+deploy:
+  - provider: NuGet
+    server: https://www.nuget.org/api/v2/package
+    api_key:
+      secure: 54fc160a-c901-4bcd-a578-f101ec55cf4b
+    artifact: Package
+    on:
+      branch: master
+
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+
+artifacts:
+  - path: '**\*.nupkg'
+    name: Package
