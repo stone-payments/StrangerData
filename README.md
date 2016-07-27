@@ -61,7 +61,7 @@ The method will creates an record in the group table, and associates it to the c
   "Name": "Random string",
   "Email": "Random string",
   "Age": "Random integer number",
-  "GroupId": "Id from generated group record"
+  "TeamId": "Id from generated group record"
 }
 ```
 So you can specify your custom values. Do following:
@@ -78,7 +78,7 @@ The dictionary will contains:
   "Name": "Will Byers",
   "Email": "Random string",
   "Age": "Random integer number",
-  "GroupId": "Id from generated group record"
+  "TeamId": "Id from generated group record"
 }
 ```
 
