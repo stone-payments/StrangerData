@@ -1,7 +1,6 @@
 # StrangerData - A .NET database populator for testing purposes
-===
 
-Travis: [![Travis](https://travis-ci.org/stone-pagamentos/DbFaker.svg?branch=master)](https://travis-ci.org/stone-pagamentos/DbFaker)
+[![Travis](https://travis-ci.org/stone-pagamentos/StrangerData.svg?branch=master)](https://travis-ci.org/stone-pagamentos/StrangerData)
 
 ## Project Description ##
 StrangerData is a tool designed to automatically fills your database with random data to make your unit/integration tests faster.  

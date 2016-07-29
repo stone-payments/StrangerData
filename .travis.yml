@@ -1,10 +1,10 @@
 language: csharp
-solution: ./src/DbFaker.sln
+solution: ./src/StrangerData.sln
 
 install:
-  - nuget restore ./src/DbFaker.sln
+  - nuget restore ./src/StrangerData.sln
   - nuget install xunit.runner.console -Version 2.1.0 -OutputDirectory testrunner
 
 script:
-  - xbuild /p:Configuration=Release ./src/DbFaker.sln
-  - mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./DbFaker.UnitTests/bin/Release/DbFaker.UnitTests.dll
+  - xbuild /p:Configuration=Release ./src/StrangerData.sln
+  - mono ./testrunner/xunit.runner.console.2.1.0/tools/xunit.console.exe ./StrangerData.UnitTests/bin/Release/StrangerData.UnitTests.dll
