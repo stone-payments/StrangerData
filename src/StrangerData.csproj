@@ -45,6 +45,7 @@
     <Compile Include="Any.cs" />
     <Compile Include="DataFactory.cs" />
     <Compile Include="ColumnType.cs" />
+    <Compile Include="ForeignKeyDependentTables.cs" />
     <Compile Include="IDbDialect.cs" />
     <Compile Include="FactoryDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
