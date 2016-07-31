@@ -260,10 +260,6 @@ namespace StrangerData.SqlServer
             return foreignContentList.ToArray();
         }
 
-
-
-
-
         public override IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
         {
             bool hasIdentity = tableSchemaInfo.Any(t => t.IsIdentity);
@@ -354,18 +350,20 @@ namespace StrangerData.SqlServer
             {
                 using (var transaction = _sqlConnection.BeginTransaction())
                 {
+                    string deleteStmt = "";
+                    SqlCommand deleteCommand = new SqlCommand();
                     while (recordIdentifiers.Count > 0)
                     {
                         RecordIdentifier recordIdentifier = recordIdentifiers.Pop();
 
-                        string deleteStmt = string.Format("DELETE FROM {0} WHERE {1} = @Id", SanitizeTableName(recordIdentifier.TableName), recordIdentifier.ColumnName);
+                        deleteStmt = string.Format($"DELETE FROM {0} WHERE {1} = @Id{2}; ", SanitizeTableName(recordIdentifier.TableName), recordIdentifier.ColumnName, recordIdentifiers.Count);
 
-                        SqlCommand deleteCommand = new SqlCommand(deleteStmt, _sqlConnection, transaction);
-                        deleteCommand.Parameters.Add(new SqlParameter { ParameterName = "@Id", Value = recordIdentifier.IdentifierValue });
+                        deleteCommand = new SqlCommand(deleteStmt, _sqlConnection, transaction);
+                        deleteCommand.Parameters.Add(new SqlParameter { ParameterName = $"@Id{recordIdentifiers.Count}", Value = recordIdentifier.IdentifierValue });
 
-                        deleteCommand.ExecuteNonQuery();
                     }
 
+                    deleteCommand.ExecuteNonQuery();
                     transaction.Commit();
                 }
             }
