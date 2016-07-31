@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StrangerData.SqlServer
 {
@@ -26,56 +27,58 @@ namespace StrangerData.SqlServer
         public override TableColumnInfo[] GetTableSchemaInfo(string tableName)
         {
             string sql = @"SELECT
-	OUTCOLUMNS.NAME                                         Name, 
-	TYPES.NAME                                              ColumnType, 
-	OUTCOLUMNS.[MAX_LENGTH]                                 [MaxLength],
-	OUTCOLUMNS.[PRECISION]                                  [Precision],
-	OUTCOLUMNS.SCALE                                        Scale,
-	OUTCOLUMNS.IS_NULLABLE                                  IsNullable,
-	OUTCOLUMNS.IS_IDENTITY                                  IsIdentity,
-    IIF(REFERENCED_COLUMN_NAME IS NULL, 0, 1)               IsForeignKey,
-	CONCAT(REFERENCED_SCHEMA, '.', REFERENCED_TABLE_NAME)   ForeignKeyTable,
-	REFERENCED_COLUMN_NAME                                  ForeignKeyColumn
-FROM SYS.COLUMNS OUTCOLUMNS
-INNER JOIN SYS.TYPES ON OUTCOLUMNS.user_type_id = TYPES.user_type_id
-outer apply(
+	            OUTCOLUMNS.NAME                                         Name, 
+	            TYPES.NAME                                              ColumnType, 
+	            OUTCOLUMNS.[MAX_LENGTH]                                 [MaxLength],
+	            OUTCOLUMNS.[PRECISION]                                  [Precision],
+	            OUTCOLUMNS.SCALE                                        Scale,
+	            OUTCOLUMNS.IS_NULLABLE                                  IsNullable,
+	            OUTCOLUMNS.IS_IDENTITY                                  IsIdentity,
+                IIF(REFERENCED_COLUMN_NAME IS NULL, 0, 1)               IsForeignKey,
+	            CONCAT(REFERENCED_SCHEMA, '.', REFERENCED_TABLE_NAME)   ForeignKeyTable,
+	            REFERENCED_COLUMN_NAME                                  ForeignKeyColumn
+            FROM SYS.COLUMNS OUTCOLUMNS
+            INNER JOIN SYS.TYPES ON OUTCOLUMNS.user_type_id = TYPES.user_type_id
+            outer apply(
 
-		SELECT DISTINCT tables.schemaName FK_SCHEMA,
-						tables.name FK_TABLE_NAME,
-						fkc.name FK_COLUMN_NAME,
-						rpk.schemaname REFERENCED_SCHEMA,
-						rpk.table_name REFERENCED_TABLE_NAME,
-						rpk.name REFERENCED_COLUMN_NAME
-		FROM sys.foreign_keys 
-			CROSS apply
-				(SELECT INCOLUMNS.name, referenced_column_id, referenced_object_id
-				   FROM sys.foreign_key_columns
-				   INNER JOIN sys.columns INCOLUMNS ON INCOLUMNS.column_id = foreign_key_columns.parent_column_id AND INCOLUMNS.[object_id] = foreign_key_columns.parent_object_id and OUTCOLUMNS.column_id = INCOLUMNS.column_id
-				   WHERE foreign_key_columns.constraint_object_id = foreign_keys.[object_id]) fkc 
-			CROSS apply
-				(SELECT schema_name(tables.schema_id) schemaname, object_name(tables.object_id) TABLE_NAME, columns.name
-				   FROM sys.tables
-				   INNER JOIN sys.columns ON tables.object_id = columns.object_id
-				   AND columns.column_id = referenced_column_id
-				   WHERE tables.object_id = fkc.referenced_object_id) rpk 
-			CROSS apply
-				(SELECT schema_name(tables.schema_id) schemaname, name
-				   FROM sys.tables
-				   WHERE tables.object_id = foreign_keys.parent_object_id) tables
+		            SELECT DISTINCT tables.schemaName FK_SCHEMA,
+						            tables.name FK_TABLE_NAME,
+						            fkc.name FK_COLUMN_NAME,
+						            rpk.schemaname REFERENCED_SCHEMA,
+						            rpk.table_name REFERENCED_TABLE_NAME,
+						            rpk.name REFERENCED_COLUMN_NAME
+		            FROM sys.foreign_keys 
+			            CROSS apply
+				            (SELECT INCOLUMNS.name, referenced_column_id, referenced_object_id
+				                FROM sys.foreign_key_columns
+				                INNER JOIN sys.columns INCOLUMNS ON INCOLUMNS.column_id = foreign_key_columns.parent_column_id AND INCOLUMNS.[object_id] = foreign_key_columns.parent_object_id and OUTCOLUMNS.column_id = INCOLUMNS.column_id
+				                WHERE foreign_key_columns.constraint_object_id = foreign_keys.[object_id]) fkc 
+			            CROSS apply
+				            (SELECT schema_name(tables.schema_id) schemaname, object_name(tables.object_id) TABLE_NAME, columns.name
+				                FROM sys.tables
+				                INNER JOIN sys.columns ON tables.object_id = columns.object_id
+				                AND columns.column_id = referenced_column_id
+				                WHERE tables.object_id = fkc.referenced_object_id) rpk 
+			            CROSS apply
+				            (SELECT schema_name(tables.schema_id) schemaname, name
+				                FROM sys.tables
+				                WHERE tables.object_id = foreign_keys.parent_object_id) tables
 	
 
 
-		WHERE foreign_keys.parent_object_id = OUTCOLUMNS.object_id
-) outerapply
-WHERE OBJECT_ID in (OBJECT_ID(@tableName))
-ORDER BY OUTCOLUMNS.column_id                
-";
+		            WHERE foreign_keys.parent_object_id = OUTCOLUMNS.object_id
+            ) outerapply
+            WHERE OBJECT_ID in (OBJECT_ID(@tableName))
+            ORDER BY OUTCOLUMNS.column_id                
+            ";
             var informationSchemaCmd = new SqlCommand(sql);
             informationSchemaCmd.Parameters.Add(new SqlParameter
             {
                 ParameterName = "@tableName",
                 Value = tableName
             });
+
+
 
             informationSchemaCmd.Connection = _sqlConnection;
 
@@ -165,6 +168,101 @@ ORDER BY OUTCOLUMNS.column_id
             }
             throw new Exception("Table not found!");
         }
+
+        public override ForeignKeyDependentTables[] GetForeignContentByTableName(string tableName)
+        {
+
+            string sql = @"	select
+              SelfSchemaName = schema_name(sys.objects.schema_id),
+              SelfTableName = sys.objects.[name],
+              SelfColumnName =sys.columns.[name],
+	          ForeignKeys.ForeignTableSchema,
+	          ForeignKeys.ForeignTableName,
+	          ForeignKeys.ForeignTableColumn
+             from sys.objects
+              inner join sys.columns
+                on (sys.columns.[object_id] = sys.objects.[object_id])
+              inner join (
+                select sys.foreign_keys.[name] as ForeignKeyName
+                 ,schema_name(sys.objects.schema_id) as ForeignTableSchema
+                 ,sys.objects.[name] as ForeignTableName
+                 ,sys.columns.[name]  as ForeignTableColumn
+                 ,sys.foreign_keys.referenced_object_id as referenced_object_id
+                 ,sys.foreign_key_columns.referenced_column_id as referenced_column_id
+                 from sys.foreign_keys
+                  inner join sys.foreign_key_columns
+                    on (sys.foreign_key_columns.constraint_object_id
+                      = sys.foreign_keys.[object_id])
+                  inner join sys.objects
+                    on (sys.objects.[object_id]
+                      = sys.foreign_keys.parent_object_id)
+                    inner join sys.columns
+                      on (sys.columns.[object_id]
+                        = sys.objects.[object_id])
+                       and (sys.columns.column_id
+                        = sys.foreign_key_columns.parent_column_id)
+                ) ForeignKeys
+
+                on (ForeignKeys.referenced_object_id = sys.objects.[object_id])
+                 and (ForeignKeys.referenced_column_id = sys.columns.column_id)
+             where (sys.objects.[type] = 'U')
+              and (sys.objects.[name] not in ('sysdiagrams'))
+	          and object_name(sys.objects.object_id) = @tableName
+	          and SCHEMA_NAME(sys.objects.schema_id) = @schemaName
+            ";
+
+
+
+            string schemaName;
+            string santizedTableName;
+
+            Regex regex = new Regex(".+? (?=\\.)");
+            Match match = regex.Match(tableName);
+
+            schemaName = match.Value;
+            santizedTableName = tableName.Replace(schemaName, "").Replace(".", "");
+
+
+            var informationSchemaCmd = new SqlCommand(sql);
+            informationSchemaCmd.Parameters.Add(new SqlParameter
+            {
+                ParameterName = "@tableName",
+                Value = santizedTableName
+            });
+            informationSchemaCmd.Parameters.Add(new SqlParameter
+            {
+                ParameterName = "@schemaName",
+                Value = schemaName
+            });
+
+            informationSchemaCmd.Connection = _sqlConnection;
+
+            var dr = informationSchemaCmd.ExecuteReader();
+
+            var foreignContentList = new List<ForeignKeyDependentTables>();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    ForeignKeyDependentTables foreignContent = new ForeignKeyDependentTables();
+
+                    foreignContent.ForeignColumnName = (string)dr["ForeignColumnName"];
+                    foreignContent.ForeignSchemaName = (string)dr["ForeignSchemaName"];
+                    foreignContent.ForeignTableName = (string)dr["ForeignTableName"];
+                    foreignContent.SelfSchemaName = (string)dr["SelfSchemaName"];
+                    foreignContent.SelfTableName = (string)dr["SelfTableName"];
+                    foreignContent.SelfColumnName = (string)dr["SelfColumnName"];
+
+                    foreignContentList.Add(foreignContent);
+                }
+            }
+
+            return foreignContentList.ToArray();
+        }
+
+
+
+
 
         public override IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
         {
