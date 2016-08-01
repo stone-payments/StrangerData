@@ -119,8 +119,8 @@ namespace StrangerData
             // For each column of the table
             foreach (TableColumnInfo column in tableSchemaInfo)
             {
-                // If the column type is a supported column type
-                if (column.ColumnType != ColumnType.Unsuported)
+                // If the column type is a supported column type, and it is not Nullable
+                if (column.ColumnType != ColumnType.Unsuported && column.IsNullable == false)
                 {
                     // If is a foreign key column
                     if (column.IsForeignKey)
