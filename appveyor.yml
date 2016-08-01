@@ -17,6 +17,9 @@ platform: Any CPU
 
 configuration: Release
 
+before_build:
+  - nuget restore
+
 build:
   parallel: true                  # enable MSBuild parallel builds
   project: src/StrangerData.sln   # path to Visual Studio solution or project
