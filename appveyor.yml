@@ -40,5 +40,5 @@ nuget:
   disable_publish_on_pr: true
 
 artifacts:
-  - path: '**\*.nupkg'
+  - path: '*.nupkg'
     name: Package
