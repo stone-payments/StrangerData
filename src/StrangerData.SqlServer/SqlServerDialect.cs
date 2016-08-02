@@ -1,5 +1,6 @@
 ﻿using StrangerData;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -175,10 +176,7 @@ namespace StrangerData.SqlServer
             string sql = @"	select
               SelfSchemaName = schema_name(sys.objects.schema_id),
               SelfTableName = sys.objects.[name],
-              SelfColumnName =sys.columns.[name],
-	          ForeignKeys.ForeignTableSchema,
-	          ForeignKeys.ForeignTableName,
-	          ForeignKeys.ForeignTableColumn
+              SelfColumnName =sys.columns.[name]
              from sys.objects
               inner join sys.columns
                 on (sys.columns.[object_id] = sys.objects.[object_id])
@@ -216,7 +214,7 @@ namespace StrangerData.SqlServer
             string schemaName;
             string santizedTableName;
 
-            Regex regex = new Regex(".+? (?=\\.)");
+            Regex regex = new Regex(".+? (?=\\.)"); //Everything before a dot
             Match match = regex.Match(tableName);
 
             schemaName = match.Value;
@@ -249,9 +247,6 @@ namespace StrangerData.SqlServer
                     foreignContent.ForeignColumnName = (string)dr["ForeignColumnName"];
                     foreignContent.ForeignSchemaName = (string)dr["ForeignSchemaName"];
                     foreignContent.ForeignTableName = (string)dr["ForeignTableName"];
-                    foreignContent.SelfSchemaName = (string)dr["SelfSchemaName"];
-                    foreignContent.SelfTableName = (string)dr["SelfTableName"];
-                    foreignContent.SelfColumnName = (string)dr["SelfColumnName"];
 
                     foreignContentList.Add(foreignContent);
                 }
@@ -259,6 +254,84 @@ namespace StrangerData.SqlServer
 
             return foreignContentList.ToArray();
         }
+
+        public Stack<RecordIdentifier> GetDependentsOnCascade(ForeignKeyDependentTableItem foreignKeyDependentTableItem)
+        {
+            string sql = @"SELECT StragerDataGenerated.@ForeignColumnName 
+                            FROM @ForeignSchemaName.@ForeignTableName AS StragerDataGenerated (nolock) 
+                            WEHERE StragerDataGenerated.@ForeignColumnName = @SelfId";
+
+
+            IList<ForeignKeyDependentTableItem> foreignKeyDependentTableItemList = new List<ForeignKeyDependentTableItem>();
+            Stack<RecordIdentifier> recordIdentifierList = new Stack<RecordIdentifier>();
+
+            foreignKeyDependentTableItemList.Add(foreignKeyDependentTableItem);
+
+
+            foreach (ForeignKeyDependentTableItem foreignKeyDependentTableItemUnity in foreignKeyDependentTableItemList)
+            {
+                foreach (ForeignKeyDependentTables foreignKeyDependentTable in foreignKeyDependentTableItemUnity.ForeignKeyDependentTableList)
+                {
+                    var informationSchemaCmd = new SqlCommand(sql);
+                    informationSchemaCmd.Parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@ForeignColumnName",
+                        Value = foreignKeyDependentTable.ForeignColumnName
+                    });
+                    informationSchemaCmd.Parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@ForeignSchemaName",
+                        Value = foreignKeyDependentTable.ForeignSchemaName
+                    });
+                    informationSchemaCmd.Parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@ForeignTableName",
+                        Value = foreignKeyDependentTable.ForeignTableName
+                    });
+                    informationSchemaCmd.Parameters.Add(new SqlParameter
+                    {
+                        ParameterName = "@SelfId",
+                        Value = foreignKeyDependentTableItemUnity.itemId
+                    });
+
+
+                    informationSchemaCmd.Connection = _sqlConnection;
+
+                    var dr = informationSchemaCmd.ExecuteReader();
+
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            RecordIdentifier recordIdentifier = new RecordIdentifier();
+                            ForeignKeyDependentTableItem newFoundforeignKeyDependentTableItem = new ForeignKeyDependentTableItem();
+
+                            recordIdentifier.TableName = foreignKeyDependentTable.ForeignTableName;
+                            recordIdentifier.ColumnName = foreignKeyDependentTable.ForeignColumnName;
+                            recordIdentifier.IdentifierValue = foreignKeyDependentTableItemUnity.itemId;
+
+                            newFoundforeignKeyDependentTableItem.ForeignKeyDependentTableList = GetForeignContentByTableName(foreignKeyDependentTable.ForeignTableName);
+                            newFoundforeignKeyDependentTableItem.itemId = foreignKeyDependentTableItemUnity.itemId;
+
+                            recordIdentifierList.Push(recordIdentifier);
+                            if (foreignKeyDependentTableItemList.Contains(newFoundforeignKeyDependentTableItem) == false)
+                            {
+                                foreignKeyDependentTableItemList.Add(newFoundforeignKeyDependentTableItem);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+            return recordIdentifierList;
+
+        }
+
+
 
         public override IDictionary<string, object> Insert(string tableName, IEnumerable<TableColumnInfo> tableSchemaInfo, IDictionary<string, object> values)
         {
