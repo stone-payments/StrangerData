@@ -187,7 +187,7 @@ namespace StrangerData
                     }
                     return Any.Int(1, 10 ^ column.Precision - 2);
                 case ColumnType.Decimal:
-                    return Any.Decimal();
+                    return Any.Decimal(column.Precision, column.Scale);
                 case ColumnType.Double:
                     return Any.Double();
                 case ColumnType.Long:
