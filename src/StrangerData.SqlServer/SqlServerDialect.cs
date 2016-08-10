@@ -112,6 +112,7 @@ ORDER BY OUTCOLUMNS.column_id
                         case "TEXT":
                         case "NTEXT":
                         case "VARCHAR":
+                        case "CHAR":
                             tableColumnInfo.ColumnType = ColumnType.String;
                             break;
                         case "ROWVERSION":
@@ -128,8 +129,6 @@ ORDER BY OUTCOLUMNS.column_id
                             break;
                         case "BIT":
                             tableColumnInfo.ColumnType = ColumnType.Boolean;
-                            break;
-                        case "CHAR":
                             break;
                         case "TINYINT":
                         case "INT":
@@ -170,10 +169,24 @@ ORDER BY OUTCOLUMNS.column_id
         {
             bool hasIdentity = tableSchemaInfo.Any(t => t.IsIdentity);
 
-            StringBuilder insertStatementBuilder = new StringBuilder()
-                                                    .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
-                                                    .AppendFormat("({0})", string.Join(",", values.Keys))
-                                                    .AppendFormat(" VALUES ({0});", string.Join(",", values.Keys.Select(c => "@" + c)));
+            StringBuilder insertStatementBuilder;
+
+            if(hasIdentity == true && tableSchemaInfo.Count() == 1)
+            {
+                insertStatementBuilder = new StringBuilder()
+                                             .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
+                                             .Append("DEFAULT VALUES");
+
+            }
+            else
+            {
+                insertStatementBuilder = new StringBuilder()
+                                             .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
+                                             .AppendFormat("({0})", string.Join(",", values.Keys))
+                                             .AppendFormat(" VALUES ({0});", string.Join(",", values.Keys.Select(c => "@" + c)));
+
+            }
+
             // .AppendFormat(" SELECT SCOPE_IDENTITY();")
             //  .ToString();
 
