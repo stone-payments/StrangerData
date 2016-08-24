@@ -107,6 +107,7 @@ ORDER BY OUTCOLUMNS.column_id
                         case "DECIMAL":
                             tableColumnInfo.ColumnType = ColumnType.Decimal;
                             break;
+                        case "CHAR":
                         case "NCHAR":
                         case "NVARCHAR":
                         case "TEXT":
@@ -128,8 +129,6 @@ ORDER BY OUTCOLUMNS.column_id
                             break;
                         case "BIT":
                             tableColumnInfo.ColumnType = ColumnType.Boolean;
-                            break;
-                        case "CHAR":
                             break;
                         case "TINYINT":
                         case "INT":
