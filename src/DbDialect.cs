@@ -37,6 +37,11 @@ namespace StrangerData
             throw new NotImplementedException();
         }
 
+        public virtual ForeignKeyDependentTables[] GetForeignContentByTableName(string tableName)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void Dispose()
         {
             throw new NotImplementedException();
