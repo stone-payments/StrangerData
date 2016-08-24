@@ -5,8 +5,8 @@
     <version>0.0.2</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
-    <projectUrl>https://github.com/stonepayments/StrangerData</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/stonepayments/StrangerData/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/stone-pagamentos/StrangerData/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>StrangerData</title>
     <summary>A .NET database populator for testing purposes.</summary>
