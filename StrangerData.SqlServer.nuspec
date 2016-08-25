@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>StrangerData.SqlServer</id>
-    <version>0.0.9</version>
+    <version>0.0.10</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
 	<dependencies>
-		<dependency id="StrangerData" version="0.0.3" />
+		<dependency id="StrangerData" version="0.0.4" />
 	</dependencies>
   </metadata>
   <files>
