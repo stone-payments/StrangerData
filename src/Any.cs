@@ -110,6 +110,15 @@ namespace StrangerData
             return (decimal)(integerPart + random.NextDouble());
         }
 
+        public static decimal Decimal(int digits, int decimals = 2)
+        {
+
+            int integerPart = Int(0, (int) Math.Pow(10, digits) - 1);
+            int integerPartDescimal = Int(0, (int) Math.Pow(10, decimals) - 1);
+            
+            return (decimal)(integerPart + (integerPartDescimal/ Math.Pow(10, decimals)));
+        }
+
         /// <summary>
         /// Generates a random double-precision floating-point number.
         /// </summary>
