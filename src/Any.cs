@@ -124,7 +124,7 @@ namespace StrangerData
         public static double Double(long precision, long scale)
         {
             double integerPart = Int(0, (int)Math.Pow(10, precision - scale) - 1);
-            double integerPartDescimal = Int(0, (int)Math.Pow(10, precision) - 1) / Math.Pow(10, precision);
+            double integerPartDescimal = Int(0, (int)Math.Pow(10, precision) - 1) / Math.Pow(10, scale);
 
             return integerPart + integerPartDescimal;
         }
