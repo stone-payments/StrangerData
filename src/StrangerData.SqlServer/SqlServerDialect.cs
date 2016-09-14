@@ -24,51 +24,53 @@ namespace StrangerData.SqlServer
         }
 
         public override TableColumnInfo[] GetTableSchemaInfo(string tableName)
-        {
-            string sql = @"SELECT
-	OUTCOLUMNS.NAME                                         Name, 
-	TYPES.NAME                                              ColumnType, 
-	OUTCOLUMNS.[MAX_LENGTH]                                 [MaxLength],
-	OUTCOLUMNS.[PRECISION]                                  [Precision],
-	OUTCOLUMNS.SCALE                                        Scale,
-	OUTCOLUMNS.IS_NULLABLE                                  IsNullable,
-	OUTCOLUMNS.IS_IDENTITY                                  IsIdentity,
-    IIF(REFERENCED_COLUMN_NAME IS NULL, 0, 1)               IsForeignKey,
-	CONCAT(REFERENCED_SCHEMA, '.', REFERENCED_TABLE_NAME)   ForeignKeyTable,
-	REFERENCED_COLUMN_NAME                                  ForeignKeyColumn
-FROM SYS.COLUMNS OUTCOLUMNS
-INNER JOIN SYS.TYPES ON OUTCOLUMNS.user_type_id = TYPES.user_type_id
-outer apply(
+        { //MaxLength is cut to half when the column is a N type. Those types use double space. 
+            string sql = @"
+            SELECT
+	            OUTCOLUMNS.NAME                                         Name, 
+	            TYPES.NAME                                              ColumnType, 
+	            FLOOR(OUTCOLUMNS.[MAX_LENGTH] * 
+	            CASE WHEN  TYPES.NAME IN ('nvarchar','nchar','ntext') 
+		            then .5	
+		            else 1 end) [MaxLength],
+	            OUTCOLUMNS.[PRECISION]                                  [Precision],
+	            OUTCOLUMNS.SCALE                                        Scale,
+	            OUTCOLUMNS.IS_NULLABLE                                  IsNullable,
+	            OUTCOLUMNS.IS_IDENTITY                                  IsIdentity,
+                IIF(REFERENCED_COLUMN_NAME IS NULL, 0, 1)               IsForeignKey,
+	            CONCAT(REFERENCED_SCHEMA, '.', REFERENCED_TABLE_NAME)   ForeignKeyTable,
+	            REFERENCED_COLUMN_NAME                                  ForeignKeyColumn
+            FROM SYS.COLUMNS OUTCOLUMNS
+            INNER JOIN SYS.TYPES ON OUTCOLUMNS.user_type_id = TYPES.user_type_id
+            outer apply(
 
-		SELECT DISTINCT tables.schemaName FK_SCHEMA,
-						tables.name FK_TABLE_NAME,
-						fkc.name FK_COLUMN_NAME,
-						rpk.schemaname REFERENCED_SCHEMA,
-						rpk.table_name REFERENCED_TABLE_NAME,
-						rpk.name REFERENCED_COLUMN_NAME
-		FROM sys.foreign_keys 
-			CROSS apply
-				(SELECT INCOLUMNS.name, referenced_column_id, referenced_object_id
-				   FROM sys.foreign_key_columns
-				   INNER JOIN sys.columns INCOLUMNS ON INCOLUMNS.column_id = foreign_key_columns.parent_column_id AND INCOLUMNS.[object_id] = foreign_key_columns.parent_object_id and OUTCOLUMNS.column_id = INCOLUMNS.column_id
-				   WHERE foreign_key_columns.constraint_object_id = foreign_keys.[object_id]) fkc 
-			CROSS apply
-				(SELECT schema_name(tables.schema_id) schemaname, object_name(tables.object_id) TABLE_NAME, columns.name
-				   FROM sys.tables
-				   INNER JOIN sys.columns ON tables.object_id = columns.object_id
-				   AND columns.column_id = referenced_column_id
-				   WHERE tables.object_id = fkc.referenced_object_id) rpk 
-			CROSS apply
-				(SELECT schema_name(tables.schema_id) schemaname, name
-				   FROM sys.tables
-				   WHERE tables.object_id = foreign_keys.parent_object_id) tables
-	
+		            SELECT DISTINCT tables.schemaName FK_SCHEMA,
+						            tables.name FK_TABLE_NAME,
+						            fkc.name FK_COLUMN_NAME,
+						            rpk.schemaname REFERENCED_SCHEMA,
+						            rpk.table_name REFERENCED_TABLE_NAME,
+						            rpk.name REFERENCED_COLUMN_NAME
+		            FROM sys.foreign_keys 
+			            CROSS apply
+				            (SELECT INCOLUMNS.name, referenced_column_id, referenced_object_id
+				               FROM sys.foreign_key_columns
+				               INNER JOIN sys.columns INCOLUMNS ON INCOLUMNS.column_id = foreign_key_columns.parent_column_id AND INCOLUMNS.[object_id] = foreign_key_columns.parent_object_id and OUTCOLUMNS.column_id = INCOLUMNS.column_id
+				               WHERE foreign_key_columns.constraint_object_id = foreign_keys.[object_id]) fkc 
+			            CROSS apply
+				            (SELECT schema_name(tables.schema_id) schemaname, object_name(tables.object_id) TABLE_NAME, columns.name
+				               FROM sys.tables
+				               INNER JOIN sys.columns ON tables.object_id = columns.object_id
+				               AND columns.column_id = referenced_column_id
+				               WHERE tables.object_id = fkc.referenced_object_id) rpk 
+			            CROSS apply
+				            (SELECT schema_name(tables.schema_id) schemaname, name
+				               FROM sys.tables
+				               WHERE tables.object_id = foreign_keys.parent_object_id) tables
 
-
-		WHERE foreign_keys.parent_object_id = OUTCOLUMNS.object_id
-) outerapply
-WHERE OBJECT_ID in (OBJECT_ID(@tableName))
-ORDER BY OUTCOLUMNS.column_id                
+		            WHERE foreign_keys.parent_object_id = OUTCOLUMNS.object_id
+            ) outerapply
+            WHERE OBJECT_ID in (OBJECT_ID(@tableName))
+            ORDER BY OUTCOLUMNS.column_id                 
 ";
             var informationSchemaCmd = new SqlCommand(sql);
             informationSchemaCmd.Parameters.Add(new SqlParameter
@@ -113,6 +115,7 @@ ORDER BY OUTCOLUMNS.column_id
                         case "TEXT":
                         case "NTEXT":
                         case "VARCHAR":
+                        case "CHAR":
                             tableColumnInfo.ColumnType = ColumnType.String;
                             break;
                         case "ROWVERSION":
