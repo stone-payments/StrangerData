@@ -115,7 +115,6 @@ namespace StrangerData.SqlServer
                         case "TEXT":
                         case "NTEXT":
                         case "VARCHAR":
-                        case "CHAR":
                             tableColumnInfo.ColumnType = ColumnType.String;
                             break;
                         case "ROWVERSION":
