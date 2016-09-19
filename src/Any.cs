@@ -70,7 +70,7 @@ namespace StrangerData
         {
             long result = random.Next((int)(minValue >> 32), (int)(maxValue >> 32));
             result = (result << 32);
-            return result = result | (long)random.Next((int)minValue, (int)maxValue);
+            return result;
         }
 
         /// <summary>
@@ -116,6 +116,17 @@ namespace StrangerData
         public static double Double()
         {
             return random.NextDouble();
+        }
+
+        /// <summary>
+        /// Generates a random double-precision floating-point number with precision and scale.
+        /// </summary>
+        public static double Double(long precision, long scale)
+        {
+            double integerPart = Int(0, (int)Math.Pow(10, precision - scale) - 1);
+            double integerPartDescimal = Int(0, (int)Math.Pow(10, scale) - 1) / Math.Pow(10, scale);
+
+            return integerPart + integerPartDescimal;
         }
 
         /// <summary>
