@@ -16,6 +16,6 @@
     <tags>fixture data-builder fake-data test-data integration-test</tags>
   </metadata>
   <files>
-    <file src="src/bin/Release/StrangerData.dll" target="lib\net45" />
+    <file src="bin/Release/StrangerData.dll" target="lib\net45" />
   </files>
 </package>
