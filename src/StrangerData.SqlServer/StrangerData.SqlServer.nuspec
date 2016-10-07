@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>StrangerData.SqlServer</id>
-    <version>0.0.9</version>
+    <version>$version$</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
