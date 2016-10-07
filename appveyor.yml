@@ -30,7 +30,7 @@ deploy:
   - provider: NuGet
     server: https://www.nuget.org/api/v2/package
     api_key:
-      secure: 54fc160a-c901-4bcd-a578-f101ec55cf4b
+      secure: '54fc160a-c901-4bcd-a578-f101ec55cf4b'
     artifact: /.*\.nupkg/
     on:
       branch: master
