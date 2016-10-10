@@ -21,7 +21,7 @@ namespace StrangerData
                                             ConfigurationManager.ConnectionStrings[nameOrConnectionString].ConnectionString :
                                             nameOrConnectionString;
 
-            _databaseDialect = (IDbDialect)Activator.CreateInstance(typeof(TDialect), connectionString);
+            _databaseDialect = DbDialectResolver.Resolve<TDialect>(connectionString);
         }
 
         public DataFactory(IDbDialect databaseDialect)
