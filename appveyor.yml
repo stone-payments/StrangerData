@@ -9,7 +9,7 @@ init:
 assembly_info:
   patch: true
   file: AssemblyInfo.*
-  assembly_version: "0.0.{build}"
+  assembly_version: "1.0.{build}"
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
@@ -30,15 +30,7 @@ deploy:
   - provider: NuGet
     server: https://www.nuget.org/api/v2/package
     api_key:
-      secure: 54fc160a-c901-4bcd-a578-f101ec55cf4b
-    artifact: Package
+      secure: ingFtxQjecEsrc2Ma2S259/K78gtFObeHFmbiDo2LQnGzgDL0l4TbRY+F1COVmZo
+    artifact: /.*\.nupkg/
     on:
       branch: master
-
-nuget:
-  project_feed: true
-  disable_publish_on_pr: true
-
-artifacts:
-  - path: '*.nupkg'
-    name: Package

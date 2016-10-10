@@ -51,7 +51,7 @@ Consider the example schema:
 ### 1. Creates a single record:
 ```csharp
 ...
-IDicionary<string, object> record = dataFactory.CreateOne("dbo.User");
+IDicionary<string, object> record = dataFactory.CreateOne("dbo.Person");
 ```
 The method will creates an record in the group table, and associates it to the created user. The dictionary will contains:
 ```json
@@ -65,7 +65,7 @@ The method will creates an record in the group table, and associates it to the c
 ```
 So you can specify your custom values. Do following:
 ```csharp
-User user = dataFactory.CreateOne("dbo.User", t => {
+User user = dataFactory.CreateOne("dbo.Person", t => {
     t.WithValue("Name", "Will Byers");
 });
 ```

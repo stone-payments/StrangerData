@@ -1,21 +1,24 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>StrangerData</id>
-    <version>0.0.4</version>
+    <id>StrangerData.SqlServer</id>
+    <version>$version$</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/stone-pagamentos/StrangerData/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <title>StrangerData</title>
-    <summary>A .NET database populator for testing purposes.</summary>
-    <description>Automatically fills your testing database with random generated data.</description>
+    <title>StrangerData - SQL Server Dialect</title>
+    <summary>MS SQL Server Dialect for StrangerData data generator.</summary>
+    <description>MS SQL Server Dialect for StrangerData data generator.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
+	<dependencies>
+		<dependency id="StrangerData" version="0.0.4" />
+	</dependencies>
   </metadata>
   <files>
-    <file src="src/bin/Release/StrangerData.dll" target="lib\net45" />
+    <file src="../StrangerData.SqlServer/bin/Release/StrangerData.SqlServer.dll" target="lib\net45" />
   </files>
 </package>

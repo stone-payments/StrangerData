@@ -148,7 +148,10 @@ namespace StrangerData
                             }
                             else
                             {
-                                generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                                if (column.IsNullable == false)
+                                {
+                                    generatedValues[column.Name] = CreateOne(column.ForeignKeyTable)[column.ForeignKeyColumn];
+                                }
                             }
                         }
                     }
@@ -180,18 +183,18 @@ namespace StrangerData
                 case ColumnType.String:
                     return Any.String(column.MaxLength);
                 case ColumnType.Int:
-                    long maxValue = 10 ^ column.Precision - 2;
+                    long maxValue = 10 ^ column.Precision - 1;
                     if (maxValue > int.MaxValue)
                     {
-                        return Any.Long(1, column.Precision - 2);
+                        return Any.Long(1, column.Precision - 1);
                     }
-                    return Any.Int(1, 10 ^ column.Precision - 2);
+                    return Any.Int(1, 10 ^ column.Precision - 1);
                 case ColumnType.Decimal:
-                    return Any.Decimal();
+                    return Any.Double(column.Precision,column.Scale);
                 case ColumnType.Double:
-                    return Any.Double();
+                    return Any.Double(column.Precision, column.Scale);
                 case ColumnType.Long:
-                    return Any.Long(1, 10 ^ column.Precision - 2);
+                    return Any.Long(1, 10 ^ column.Precision - 1);
                 case ColumnType.Boolean:
                     return Any.Boolean();
                 case ColumnType.Guid:
