@@ -9,6 +9,7 @@ namespace StrangerData.Utils
     public static class MemoryCache
     {
         private static IDictionary<string, object> _cache;
+
         private static IDictionary<string, object> Cache
         {
             get

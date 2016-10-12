@@ -4,6 +4,7 @@ using System.Linq;
 using Xunit;
 using FluentAssertions;
 using StrangerData.UnitTests.Lib;
+using System;
 
 namespace StrangerData.UnitTests
 {
@@ -22,7 +23,7 @@ namespace StrangerData.UnitTests
         [Fact]
         public void CreateOne_TableWithoutForeignKey_CreateRecord()
         {
-            string testTable = "dbo.MyTable";
+            string testTable = $"dbo.MyTable{DateTime.Now.Ticks}";
 
             var tableSchemaInfo = new[]
                             {
@@ -65,8 +66,8 @@ namespace StrangerData.UnitTests
         [Fact]
         public void CreateOne_TableWithForeignKey_CreateRecordForTableAndReferencedTable()
         {
-            string tableName = "dbo.MyTable";
-            string referencedTableName = "dbo.MyForeignTable";
+            string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
+            string referencedTableName = $"dbo.MyForeignTable{DateTime.Now.Ticks}";
 
             var tableSchemaInfo = new[]
                             {
@@ -133,8 +134,8 @@ namespace StrangerData.UnitTests
         [Fact]
         public void TearDown_TableWithForeignKeys_GenerateRecordsToDelete()
         {
-            string tableName = "dbo.MyTable";
-            string referencedTableName = "dbo.MyForeignTable";
+            string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
+            string referencedTableName = $"dbo.MyForeignTable{DateTime.Now.Ticks}";
 
             var tableSchemaInfo = new[]
                             {

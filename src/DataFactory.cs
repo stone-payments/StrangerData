@@ -25,6 +25,8 @@ namespace StrangerData
 
         public DataFactory(IDbDialect databaseDialect)
         {
+            _tearDownStack = new Stack<Action>();
+
             _databaseDialect = databaseDialect;
         }
 

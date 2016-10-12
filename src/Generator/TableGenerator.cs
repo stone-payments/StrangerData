@@ -37,7 +37,18 @@ namespace StrangerData.Generator
 
         public IDictionary<string, object> GenerateValues(Action<FactoryDefinition> customDefinitions)
         {
-            return null;
+            IDictionary<string, object> generatedValuesDict = new Dictionary<string, object>();
+
+            FactoryDefinition definitions = new FactoryDefinition(generatedValuesDict);
+
+            // Apply custom definition
+            customDefinitions(definitions);
+
+            // Generate the values
+            GenerateValuesForColumns(generatedValuesDict);
+
+            // Insert values into database
+            return InsertInDatabase(generatedValuesDict);
         }
 
         public IDictionary<string, object> GenerateValues()
@@ -46,24 +57,36 @@ namespace StrangerData.Generator
 
             if (!HasIdentityColumn())
             {
-                /*
-                 *   var firstColumn = tableSchemaInfo.First();
+                var firstColumn = _tableColumnInfoList.First();
 
-                object identityValue = GenerateValueForColumn(firstColumn);
+                object identityValue = RandomValues.ForColumn(firstColumn);
 
                 generatedValues[firstColumn.Name] = identityValue;
 
-                if (_databaseDialect.RecordExists(tableName, firstColumn.Name, identityValue))
+                if (_dbDialect.RecordExists(_tableName, firstColumn.Name, identityValue))
                 {
-                    fromDatabase = true;
-                    return _databaseDialect.GetValuesFromDatabase(tableName, firstColumn.Name, identityValue);
+                    return _dbDialect.GetValuesFromDatabase(_tableName, firstColumn.Name, identityValue);
                 }
-                 */
             }
 
+            // Generate the values
+            GenerateValuesForColumns(generatedValues);            
+
+            // Insert values into database
+            return InsertInDatabase(generatedValues);
+        }
+
+        private void GenerateValuesForColumns(IDictionary<string, object> generatedValuesDict)
+        {
             // For each column
             foreach (TableColumnInfo column in _tableColumnInfoList)
             {
+                // Skip the column if it was already been generated.
+                if (generatedValuesDict.ContainsKey(column.Name))
+                {
+                    continue;
+                }
+
                 // If the column type is a supported column type, and it is not Nullable
                 if (column.ColumnType != ColumnType.Unsuported && !column.IsNullable)
                 {
@@ -81,7 +104,7 @@ namespace StrangerData.Generator
 
                                 IDictionary<string, object> foreignKeyGeneratedData = foreignKeyTableGenerator.GenerateValues();
 
-                                generatedValues[column.ForeignKeyTable] = foreignKeyGeneratedData[column.ForeignKeyTable];
+                                generatedValuesDict[column.ForeignKeyTable] = foreignKeyGeneratedData[column.ForeignKeyTable];
 
                                 // TODO: Inner from database?
                             }
@@ -95,7 +118,7 @@ namespace StrangerData.Generator
                             if (existingRecord != null)
                             {
                                 // Use the existing value
-                                generatedValues[column.Name] = existingRecord.IdentifierValue;
+                                generatedValuesDict[column.Name] = existingRecord.IdentifierValue;
                             }
                             else
                             {
@@ -103,7 +126,7 @@ namespace StrangerData.Generator
                                 {
                                     // creates a new table generator to generate data for this foreign key
                                     TableGenerator foreignKeyTableGenerator = new TableGenerator(_dbDialect, column.ForeignKeyTable, _generatedRecords, _depth + 1);
-                                    generatedValues[column.Name] = foreignKeyTableGenerator.GenerateValues()[column.ForeignKeyColumn];
+                                    generatedValuesDict[column.Name] = foreignKeyTableGenerator.GenerateValues()[column.ForeignKeyColumn];
                                 }
                             }
                         }
@@ -114,14 +137,11 @@ namespace StrangerData.Generator
                         if (!column.IsIdentity)
                         {
                             // Nor a identity column
-                            generatedValues[column.Name] = RandomValues.ForColumn(column);
+                            generatedValuesDict[column.Name] = RandomValues.ForColumn(column);
                         }
                     }
                 }
             }
-
-            // Insert values into database
-            return InsertInDatabase(generatedValues);
         }
 
         public Stack<RecordIdentifier> GetGeneratedRecords()
@@ -129,11 +149,19 @@ namespace StrangerData.Generator
             return _generatedRecords;
         }
 
+        /// <summary>
+        /// Deletes all generated records.
+        /// </summary>
         internal void TearDown()
         {
             _dbDialect.DeleteAll(_generatedRecords);
         }
 
+        /// <summary>
+        /// Inserts the generated value into database.
+        /// </summary>
+        /// <param name="values">Generated values dictionary.</param>
+        /// <returns>The dictionary itself.</returns>
         private IDictionary<string, object> InsertInDatabase(IDictionary<string, object> values)
         {
             IDictionary<string, object> insertResult = _dbDialect.Insert(_tableName, _tableColumnInfoList, values);
@@ -150,6 +178,12 @@ namespace StrangerData.Generator
             return insertResult;
         }
 
+        /// <summary>
+        /// Gets a generated record by their table name and column name.
+        /// </summary>
+        /// <param name="table">Table name.</param>
+        /// <param name="column">Column name.</param>
+        /// <returns>The record identifier associated with the record found.</returns>
         private RecordIdentifier GetGeneratedRecord(string table, string column)
         {
             return _generatedRecords.FirstOrDefault(t => t.TableName == table && t.ColumnName == column);
@@ -165,7 +199,7 @@ namespace StrangerData.Generator
         }
 
         /// <summary>
-        /// Returns if this table has a identity column
+        /// Returns if this table has a identity column.
         /// </summary>
         private bool HasIdentityColumn()
         {
