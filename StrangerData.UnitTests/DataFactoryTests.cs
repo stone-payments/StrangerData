@@ -69,17 +69,7 @@ namespace StrangerData.UnitTests
             string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
             string referencedTableName = $"dbo.MyForeignTable{DateTime.Now.Ticks}";
 
-            var tableSchemaInfo = new[]
-                            {
-                                new TableColumnInfo { ColumnType = ColumnType.String, Name = "MyColumn1", MaxLength = 20 },
-                                new TableColumnInfo {
-                                    ColumnType = ColumnType.Int,
-                                    Name = "MyForeignTableId", IsForeignKey = true,
-                                    ForeignKeyTable = referencedTableName,
-                                    ForeignKeyColumn = "MyForeignId",
-                                    Precision = 10
-                                }
-                            };
+            MockGetTableSchemaInfoWithForeignKey(tableName, referencedTableName);
 
             var foreignTableSchemaInfo = new[]
             {
@@ -95,10 +85,6 @@ namespace StrangerData.UnitTests
 
             _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(referencedTableName))))
                             .Returns(foreignTableSchemaInfo)
-                            .Verifiable();
-
-            _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(tableName))))
-                            .Returns(tableSchemaInfo)
                             .Verifiable();
 
             _databaseDialect.Setup(t => t.RecordExists(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
@@ -137,17 +123,7 @@ namespace StrangerData.UnitTests
             string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
             string referencedTableName = $"dbo.MyForeignTable{DateTime.Now.Ticks}";
 
-            var tableSchemaInfo = new[]
-                            {
-                                new TableColumnInfo { ColumnType = ColumnType.String, Name = "MyColumn1", MaxLength = 20 },
-                                new TableColumnInfo {
-                                    ColumnType = ColumnType.Int,
-                                    Name = "MyForeignTableId", IsForeignKey = true,
-                                    ForeignKeyTable = referencedTableName,
-                                    ForeignKeyColumn = "MyForeignId",
-                                    Precision = 10
-                                }
-                            };
+            MockGetTableSchemaInfoWithForeignKey(tableName, referencedTableName);
 
             var foreignTableSchemaInfo = new[]
             {
@@ -167,9 +143,6 @@ namespace StrangerData.UnitTests
 
             _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(referencedTableName))))
                             .Returns(foreignTableSchemaInfo);
-
-            _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(tableName))))
-                            .Returns(tableSchemaInfo);
 
             _databaseDialect.Setup(t => t.RecordExists(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()))
                             .Returns(false);
@@ -204,6 +177,56 @@ namespace StrangerData.UnitTests
             var result = _dataFactory.CreateOne(tableName);
 
             _dataFactory.TearDown();
+        }
+
+        [Fact]
+        public void CreateOne_WithCustomDefinitionsForForeignColumn_NotGenerateRandomValue()
+        {
+            string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
+            string referencedTableName = $"dbo.MyForeignTable{DateTime.Now.Ticks}";
+
+            MockGetTableSchemaInfoWithForeignKey(tableName, referencedTableName);
+
+            // Setup insertion of generated table data
+            var primaryTableData = new Dictionary<string, object>();
+            primaryTableData.Add("MyColumn1", "TEST");
+            primaryTableData.Add("MyForeignTableId", 123);
+
+            _databaseDialect.Setup(t => t.Insert(It.Is<string>(table => table.Equals(tableName)),
+                                     It.IsAny<TableColumnInfo[]>(),
+                                     It.IsAny<IDictionary<string, object>>()
+                       )).Returns(primaryTableData);
+
+            // Setup insert with referenced table name, it shouldn't be called
+            _databaseDialect.Setup(t => t.Insert(It.Is<string>(c => c == referencedTableName),
+                                                  It.IsAny<IEnumerable<TableColumnInfo>>(),
+                                                  It.IsAny<IDictionary<string, object>>()))
+                            .Throws(new Exception("Shouldn't be called"));
+
+            _dataFactory.CreateOne(tableName, o =>
+            {
+                o.WithValue("MyForeignTableId", 2);
+            });
+        }
+
+        private void MockGetTableSchemaInfoWithForeignKey(string tableName, string referencedTableName)
+        {
+            TableColumnInfo[] tableSchemaInfo = new[]
+            {
+                new TableColumnInfo { ColumnType = ColumnType.String, Name = "MyColumn1", MaxLength = 20 },
+                new TableColumnInfo {
+                    ColumnType = ColumnType.Int,
+                    Name = "MyForeignTableId", IsForeignKey = true,
+                    ForeignKeyTable = referencedTableName,
+                    ForeignKeyColumn = "MyForeignId",
+                    Precision = 10
+                }
+            };
+
+
+            _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(tableName))))
+                            .Returns(tableSchemaInfo)
+                            .Verifiable();
         }
     }
 }
