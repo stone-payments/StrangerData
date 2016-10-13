@@ -57,15 +57,15 @@ namespace StrangerData.Generator
 
             if (!HasIdentityColumn())
             {
-                var firstColumn = _tableColumnInfoList.First();
+                var firstNonFKColumn = _tableColumnInfoList.First(c => c.IsForeignKey == false);
 
-                object identityValue = RandomValues.ForColumn(firstColumn);
+                object identityValue = RandomValues.ForColumn(firstNonFKColumn);
 
-                generatedValues[firstColumn.Name] = identityValue;
+                generatedValues[firstNonFKColumn.Name] = identityValue;
 
-                if (_dbDialect.RecordExists(_tableName, firstColumn.Name, identityValue))
+                if (_dbDialect.RecordExists(_tableName, firstNonFKColumn.Name, identityValue))
                 {
-                    return _dbDialect.GetValuesFromDatabase(_tableName, firstColumn.Name, identityValue);
+                    return _dbDialect.GetValuesFromDatabase(_tableName, firstNonFKColumn.Name, identityValue);
                 }
             }
 
