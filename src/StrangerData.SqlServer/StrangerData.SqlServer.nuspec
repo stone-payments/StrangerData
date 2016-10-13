@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
 	<dependencies>
-		<dependency id="StrangerData" version="0.0.2" />
+		<dependency id="StrangerData" version="1.0.36" />
 	</dependencies>
   </metadata>
   <files>
