@@ -209,6 +209,34 @@ namespace StrangerData.UnitTests
             });
         }
 
+        [Fact]
+        public void CreateOne_TableWithUniqueKey_ChecksIfValueExists()
+        {
+            string tableName = $"dbo.MyTable{DateTime.Now.Ticks}";
+            string columnName = "MyUniqueColumn";
+
+            TableColumnInfo[] tableSchema = MockGetTableSchemaInfoWithUniqueKey(tableName, columnName);
+
+            Dictionary<string, object> insertedValues = new Dictionary<string, object>();
+            insertedValues["MyColumn1"] = "testString";
+
+            _databaseDialect.Setup(t => t.RecordExists(tableName, columnName, It.IsAny<object>()))
+                .Callback((string t, string column, object val) => { insertedValues[column] = val; })
+                .Returns(false)
+                .Verifiable();
+
+            _databaseDialect.Setup(t => t.Insert(tableName, tableSchema, insertedValues))
+                .Returns(insertedValues)
+                .Verifiable();
+
+            _dataFactory.CreateOne(tableName, o =>
+            {
+                o.WithValue("MyColumn1", "testString");
+            });
+
+            _databaseDialect.VerifyAll();
+        }
+
         private void MockGetTableSchemaInfoWithForeignKey(string tableName, string referencedTableName)
         {
             TableColumnInfo[] tableSchemaInfo = new[]
@@ -227,6 +255,27 @@ namespace StrangerData.UnitTests
             _databaseDialect.Setup(t => t.GetTableSchemaInfo(It.Is<string>(table => table.Equals(tableName))))
                             .Returns(tableSchemaInfo)
                             .Verifiable();
+        }
+
+        private TableColumnInfo[] MockGetTableSchemaInfoWithUniqueKey(string tableName, string uniqueColumnName)
+        {
+            TableColumnInfo[] tableSchemaInfo = new[]
+            {
+                new TableColumnInfo { ColumnType = ColumnType.String, Name = "MyColumn1", MaxLength = 20 },
+                new TableColumnInfo {
+                    ColumnType = ColumnType.Int,
+                    Name = uniqueColumnName,
+                    IsForeignKey = false,
+                    Precision = 10,
+                    IsUnique = true,
+                }
+            };
+
+            _databaseDialect.Setup(t => t.GetTableSchemaInfo(tableName))
+                            .Returns(tableSchemaInfo)
+                            .Verifiable();
+
+            return tableSchemaInfo;
         }
     }
 }
