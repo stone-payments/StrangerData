@@ -74,7 +74,7 @@ namespace StrangerData.SqlServer
 				SELECT CAST(
 					CASE WHEN EXISTS (
 						SELECT * from sys.key_constraints C
-						WHERE PARENT_OBJECT_ID in (OBJECT_ID('Mcc'))
+						WHERE PARENT_OBJECT_ID in (OBJECT_ID(@tableName))
 						AND unique_index_id = OUTCOLUMNS.column_id) THEN 1
 					ELSE 0
 					END
