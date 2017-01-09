@@ -39,7 +39,8 @@ namespace StrangerData.SqlServer
 	            OUTCOLUMNS.IS_IDENTITY                                  IsIdentity,
                 IIF(REFERENCED_COLUMN_NAME IS NULL, 0, 1)               IsForeignKey,
 	            CONCAT(REFERENCED_SCHEMA, '.', REFERENCED_TABLE_NAME)   ForeignKeyTable,
-	            REFERENCED_COLUMN_NAME                                  ForeignKeyColumn
+	            REFERENCED_COLUMN_NAME                                  ForeignKeyColumn,
+	            IS_UNIQUE                                               IsUnique
             FROM SYS.COLUMNS OUTCOLUMNS
             INNER JOIN SYS.TYPES ON OUTCOLUMNS.user_type_id = TYPES.user_type_id
             outer apply(
@@ -69,8 +70,18 @@ namespace StrangerData.SqlServer
 
 		            WHERE foreign_keys.parent_object_id = OUTCOLUMNS.object_id
             ) outerapply
+			OUTER APPLY(
+				SELECT CAST(
+					CASE WHEN EXISTS (
+						SELECT * from sys.key_constraints C
+						WHERE PARENT_OBJECT_ID in (OBJECT_ID('Mcc'))
+						AND unique_index_id = OUTCOLUMNS.column_id) THEN 1
+					ELSE 0
+					END
+				AS BIT) AS IS_UNIQUE
+			) PK
             WHERE OBJECT_ID in (OBJECT_ID(@tableName))
-            ORDER BY OUTCOLUMNS.column_id                 
+            ORDER BY OUTCOLUMNS.column_id
 ";
             var informationSchemaCmd = new SqlCommand(sql);
             informationSchemaCmd.Parameters.Add(new SqlParameter
@@ -99,6 +110,7 @@ namespace StrangerData.SqlServer
                     tableColumnInfo.IsForeignKey = Convert.ToBoolean(dr["IsForeignKey"]);
                     tableColumnInfo.ForeignKeyTable = (string)dr["ForeignKeyTable"];
                     tableColumnInfo.ForeignKeyColumn = dr["ForeignKeyColumn"] is DBNull ? null : (string)dr["ForeignKeyColumn"];
+                    tableColumnInfo.IsUnique = Convert.ToBoolean(dr["IsUnique"]);
 
                     switch (((string)dr["ColumnType"]).ToUpper())
                     {
