@@ -54,5 +54,10 @@ namespace StrangerData
         /// Related key column, if the column is a foreign key.
         /// </summary>
         public string ForeignKeyColumn { get; set; }
+
+        /// <summary>
+        /// Indicates if the column has a unique constraint. Either Primary Key or Unique Constraint applies.
+        /// </summary>
+        public bool IsUnique { get; set; }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrangerData.Utils
 {
@@ -17,12 +13,12 @@ namespace StrangerData.Utils
                     return Any.String(columnInfo.MaxLength);
                 case ColumnType.Int:
                     // generates a random integer
-                    long maxValue = 10 ^ columnInfo.Precision - 1;
+                    long maxValue = (int)Math.Pow(10, columnInfo.Precision - 1);
                     if (maxValue > int.MaxValue)
                     {
-                        return Any.Long(1, columnInfo.Precision - 1);
+                        return Any.Long(1, maxValue);
                     }
-                    return Any.Int(1, 10 ^ columnInfo.Precision - 1);
+                    return Any.Int(1, (int)maxValue);
                 case ColumnType.Decimal:
                     // generates a random decimal
                     return Any.Double(columnInfo.Precision, columnInfo.Scale);
@@ -31,7 +27,7 @@ namespace StrangerData.Utils
                     return Any.Double(columnInfo.Precision, columnInfo.Scale);
                 case ColumnType.Long:
                     // generates a random long
-                    return Any.Long(1, 10 ^ columnInfo.Precision - 1);
+                    return Any.Long(1, (int)Math.Pow(10, columnInfo.Precision - 1));
                 case ColumnType.Boolean:
                     // generates a random boolean
                     return Any.Boolean();

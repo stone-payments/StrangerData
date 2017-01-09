@@ -131,6 +131,18 @@ namespace StrangerData.Generator
                             }
                         }
                     } // if (column.IsForeignKey)
+                    else if (column.IsUnique)
+                    {
+                        object random = RandomValues.ForColumn(column);
+
+                        // Keep generating random value while they are not unique
+                        while (_dbDialect.RecordExists(_tableName, column.Name, random))
+                        {
+                            random = RandomValues.ForColumn(column);
+                        }
+
+                        generatedValuesDict[column.Name] = random;
+                    }
                     else
                     {
                         // Is not a foreign key
