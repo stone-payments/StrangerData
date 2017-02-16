@@ -14,8 +14,16 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
+    <dependencies>
+      <dependency id="Microsoft.Extensions.Configuration" version="1.1.0" />
+      <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="1.1.0" />
+      <dependency id="Microsoft.Extensions.Configuration.FileExtensions" version="1.0.0" />
+      <dependency id="Microsoft.Extensions.Configuration.Json" version="1.0.0" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="bin/Release/StrangerData.dll" target="lib\net45" />
+    <file src="bin/Release/net452/StrangerData.dll" target="lib\net452" />
+    <file src="bin/Release/dnxcore50/StrangerData.dll" target="lib\dnxcore50" />
+    <file src="bin/Release/netcoreapp1.0/StrangerData.dll" target="lib\netcoreapp1.0" />
   </files>
 </package>

@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "StrangerData": "1.0.0-*",
+    "System.Data.SqlClient": "4.1.0",
+    "System.Linq": "4.3.0"
+  },
+
+  "frameworks": {
+    "dnxcore50": {
+    },
+    "net452": {
+    },
+    "netcoreapp1.0": {
+    }
+  },
+}
