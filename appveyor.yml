@@ -26,8 +26,10 @@ build_script:
 - dotnet build "test\StrangerData.UnitTests" --configuration RELEASE
 
 after_build:
-- dotnet pack "src\StrangerData" --configuration RELEASE --output .
-- dotnet pack "src\StrangerData.SqlServer" --configuration RELEASE --output .
+#- dotnet pack "src\StrangerData" --configuration RELEASE --output .
+#- dotnet pack "src\StrangerData.SqlServer" --configuration RELEASE --output .
+- nuget pack src\StrangerData\StrangerData.nuspec -o .
+- nuget pack src\StrangerData.SqlServer\StrangerData.SqlServer.nuspec -o .
 
 deploy:
   - provider: NuGet

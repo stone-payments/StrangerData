@@ -15,7 +15,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
     <dependencies>
-      <dependency id="StrangerData" version="1.0.36" />
+      <dependency id="StrangerData" version="1.0.56" />
       <dependency id="System.Data.SqlClient" version="4.1.0" />
       <dependency id="System.Linq" version="4.3.0" />
     </dependencies>
