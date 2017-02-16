@@ -18,11 +18,11 @@ platform: Any CPU
 configuration: Release
 
 before_build:
-  - nuget restore src/StrangerData.sln
+  - nuget restore StrangerData.sln
 
 build:
   parallel: true                  # enable MSBuild parallel builds
-  project: src/StrangerData.sln   # path to Visual Studio solution or project
+  project: StrangerData.sln       # path to Visual Studio solution or project
   publish_nuget: true             # package projects with .nuspec files and push to artifacts
 
 
