@@ -33,3 +33,7 @@ deploy:
     artifact: /.*\.nupkg/
     on:
       branch: master
+
+test:
+    assemblies:
+    - 'test\StrangerData.UnitTests\bin\Debug\net452\win7-x64\*.dll'
