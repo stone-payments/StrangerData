@@ -21,13 +21,13 @@ before_build:
 - dotnet restore -v Minimal
 
 build_script:
-- dotnet build "src\StrangerData"
-- dotnet build "src\StrangerData.SqlServer"
-- dotnet build "test\StrangerData.UnitTests"
+- dotnet build "src\StrangerData" --configuration RELEASE
+- dotnet build "src\StrangerData.SqlServer" --configuration RELEASE
+- dotnet build "test\StrangerData.UnitTests" --configuration RELEASE
 
 after_build:
-- dotnet pack "src\StrangerData"
-- dotnet pack "src\StrangerData.SqlServer"
+- dotnet pack "src\StrangerData" --configuration RELEASE --output .
+- dotnet pack "src\StrangerData.SqlServer" --configuration RELEASE --output .
 
 deploy:
   - provider: NuGet
