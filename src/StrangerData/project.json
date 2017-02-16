@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.Extensions.Configuration": "1.1.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+  },
+
+  "frameworks": {
+    "dnxcore50": {
+    },
+    "net452": {
+    },
+    "netcoreapp1.0": {
+    }
+  }
+}

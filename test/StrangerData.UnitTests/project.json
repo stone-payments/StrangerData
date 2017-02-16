@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+  "dependencies": {
+    "FluentAssertions": "4.19.0",
+    "Moq": "4.5.30",
+    "StrangerData": "1.0.0-*",
+    "xunit": "2.1.0"
+  },
+
+  "frameworks": {
+    "net452": {
+    },
+  }
+}

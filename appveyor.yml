@@ -18,13 +18,12 @@ platform: Any CPU
 configuration: Release
 
 before_build:
-  - nuget restore src/StrangerData.sln
+- dotnet restore -v Minimal
 
-build:
-  parallel: true                  # enable MSBuild parallel builds
-  project: src/StrangerData.sln   # path to Visual Studio solution or project
-  publish_nuget: true             # package projects with .nuspec files and push to artifacts
-
+build_script:
+- dotnet build "src\StrangerData"
+- dotnet build "src\StrangerData.SqlServer"
+- dotnet build "test\StrangerData.UnitTests"
 
 deploy:
   - provider: NuGet
@@ -34,3 +33,7 @@ deploy:
     artifact: /.*\.nupkg/
     on:
       branch: master
+
+test:
+    assemblies:
+    - 'test\StrangerData.UnitTests\bin\Debug\net452\win7-x64\*.dll'

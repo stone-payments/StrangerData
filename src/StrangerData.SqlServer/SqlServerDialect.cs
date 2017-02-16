@@ -172,7 +172,7 @@ namespace StrangerData.SqlServer
 
                     tableColumns.Add(tableColumnInfo);
                 }
-                dr.Close();
+                dr.Dispose();
 
                 return tableColumns.ToArray();
             }
@@ -248,14 +248,12 @@ namespace StrangerData.SqlServer
 
                 IDictionary<string, object> valuesFromDatabase = new Dictionary<string, object>();
 
-                DataTable schemaTable = getRecordCmdResult.GetSchemaTable();
-
                 for (var i = 0; i < getRecordCmdResult.FieldCount; i++)
                 {
                     valuesFromDatabase[getRecordCmdResult.GetName(i)] = getRecordCmdResult[i];
                 }
 
-                if (!getRecordCmdResult.IsClosed) getRecordCmdResult.Close();
+                if (!getRecordCmdResult.IsClosed) getRecordCmdResult.Dispose();
 
                 return valuesFromDatabase;
             }

@@ -1,8 +1,7 @@
 ﻿using StrangerData.Generator;
+using StrangerData.Utils;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 
 namespace StrangerData
 {
@@ -16,8 +15,8 @@ namespace StrangerData
         {
             _tearDownStack = new Stack<Action>();
 
-            string connectionString = (ConfigurationManager.ConnectionStrings[nameOrConnectionString] != null) ?
-                                            ConfigurationManager.ConnectionStrings[nameOrConnectionString].ConnectionString :
+            string connectionString = (ConfigurationManager.GetConnectionString(nameOrConnectionString) != null) ?
+                                            ConfigurationManager.GetConnectionString(nameOrConnectionString) :
                                             nameOrConnectionString;
 
             _databaseDialect = DbDialectResolver.Resolve<TDialect>(connectionString);

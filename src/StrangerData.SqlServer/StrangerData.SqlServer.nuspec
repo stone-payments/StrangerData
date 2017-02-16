@@ -14,11 +14,15 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
-	<dependencies>
-		<dependency id="StrangerData" version="1.0.36" />
-	</dependencies>
+    <dependencies>
+      <dependency id="StrangerData" version="1.0.36" />
+      <dependency id="System.Data.SqlClient" version="4.1.0" />
+      <dependency id="System.Linq" version="4.3.0" />
+    </dependencies>
   </metadata>
   <files>
-    <file src="../StrangerData.SqlServer/bin/Release/StrangerData.SqlServer.dll" target="lib\net45" />
+    <file src="bin/Release/net452/StrangerData.SqlServer.dll" target="lib\net452" />
+    <file src="bin/Release/dnxcore50/StrangerData.SqlServer.dll" target="lib\dnxcore50" />
+    <file src="bin/Release/netcoreapp1.0/StrangerData.SqlServer.dll" target="lib\netcoreapp1.0" />
   </files>
 </package>
