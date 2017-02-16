@@ -201,7 +201,7 @@ namespace StrangerData.Generator
         /// <param name="foreignKeyTableName">Name of the foreign key table.</param>
         private bool IsSelfReferencedForeignKey(string foreignKeyTableName)
         {
-            return foreignKeyTableName.Equals(_tableName, StringComparison.InvariantCultureIgnoreCase);
+            return foreignKeyTableName.Equals(_tableName, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
