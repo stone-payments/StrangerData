@@ -25,6 +25,10 @@ build_script:
 - dotnet build "src\StrangerData.SqlServer"
 - dotnet build "test\StrangerData.UnitTests"
 
+after_build:
+- dotnet pack "src\StrangerData"
+- dotnet pack "src\StrangerData.SqlServer"
+
 deploy:
   - provider: NuGet
     server: https://www.nuget.org/api/v2/package
