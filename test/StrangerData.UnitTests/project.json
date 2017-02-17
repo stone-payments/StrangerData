@@ -1,15 +1,16 @@
-{
-  "version": "1.0.0-*",
+﻿{
+  "version": "99.99.99",
   "testRunner": "xunit",
   "dependencies": {
+    "dotnet-test-xunit": "1.0.0-rc2-build10025",
     "FluentAssertions": "4.19.0",
     "Moq": "4.5.30",
-    "StrangerData": "1.0.0-*",
+    "StrangerData": "99.99.99",
     "xunit": "2.1.0"
   },
 
   "frameworks": {
     "net452": {
-    },
+    }
   }
 }

@@ -1,10 +1,25 @@
-{
-  "version": "1.0.46-*",
+﻿{
+  "name": "StrangerData",
+  "version": "99.99.99",
+
+  "title": "StrangerData",
+  "description": "Automatically fills your testing database with random generated data.",
+  "authors": [ "Pedro Henrique B. Fernandes", "Diego Anckizes", "Mateus Dalepiane" ],
+  "copyright": "Buy4 2016",
+
+  "packOptions": {
+    "summary": "A .NET database populator for testing purposes.",
+    "licenseUrl": "https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE",
+    "projectUrl": "https://github.com/stone-pagamentos/StrangerData",
+    "requireLicenseAcceptance": false,
+    "owners": [ "Buy4" ],
+    "tags": [ "fixture", "data-builder", "fake-data", "test-data", "integration-test" ]
+  },
 
   "dependencies": {
     "Microsoft.Extensions.Configuration": "1.1.0",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0"
   },
 
   "frameworks": {

@@ -1,8 +1,23 @@
-{
-  "version": "1.0.46-*",
+﻿{
+  "name": "StrangerData.SqlServer",
+  "version": "99.99.99",
+
+  "title": "StrangerData - SQL Server Dialect",
+  "description": "MS SQL Server Dialect for StrangerData data generator.",
+  "authors": [ "Pedro Henrique B. Fernandes", "Diego Anckizes", "Mateus Dalepiane" ],
+  "copyright": "Buy4 2016",
+
+  "packOptions": {
+    "summary": "MS SQL Server Dialect for StrangerData data generator.",
+    "licenseUrl": "https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE",
+    "projectUrl": "https://github.com/stone-pagamentos/StrangerData",
+    "requireLicenseAcceptance": false,
+    "owners": [ "Buy4" ],
+    "tags": [ "fixture", "data-builder", "fake-data", "test-data", "integration-test" ]
+  },
 
   "dependencies": {
-    "StrangerData": "1.0.46",
+    "StrangerData": "99.99.99",
     "System.Data.SqlClient": "4.1.0",
     "System.Linq": "4.3.0"
   },
@@ -14,5 +29,5 @@
     },
     "netcoreapp1.0": {
     }
-  },
+  }
 }
