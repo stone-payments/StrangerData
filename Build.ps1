@@ -1,7 +1,7 @@
 if(Test-Path .\artifacts) { Remove-Item .\artifacts -Force -Recurse }
 
 # Evaluate next version based on AppVeyor build version
-$actual_version = "1.0.$env:APPVEYOR_BUILD_VERSION"
+$actual_version = "$env:APPVEYOR_BUILD_VERSION"
 Write-Host "Set version to $actual_version"
 
 # Set version on project files
