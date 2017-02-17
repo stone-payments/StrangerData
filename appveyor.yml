@@ -5,6 +5,8 @@ image: Visual Studio 2015
 init:
   - git config --global core.autocrlf input
 
+version: 1.0.{build}
+
 # enable patching of AssemblyInfo.* files
 assembly_info:
   patch: true
@@ -26,17 +28,15 @@ build_script:
 - dotnet build "test\StrangerData.UnitTests" --configuration RELEASE
 
 after_build:
-#- dotnet pack "src\StrangerData" --configuration RELEASE --output .
-#- dotnet pack "src\StrangerData.SqlServer" --configuration RELEASE --output .
-- nuget pack src\StrangerData\StrangerData.nuspec -o .
-- nuget pack src\StrangerData.SqlServer\StrangerData.SqlServer.nuspec -o .
+- dotnet pack src\StrangerData --configuration RELEASE --output .
+- dotnet pack src\StrangerData.SqlServer --configuration RELEASE --output .
 
 deploy:
   - provider: NuGet
     server: https://www.nuget.org/api/v2/package
     api_key:
       secure: ingFtxQjecEsrc2Ma2S259/K78gtFObeHFmbiDo2LQnGzgDL0l4TbRY+F1COVmZo
-    artifact: /.*\.nupkg/
+    artifact: /.*.nupkg/
     on:
       branch: master
 

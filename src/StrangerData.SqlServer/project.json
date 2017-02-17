@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.46-*",
 
   "dependencies": {
-    "StrangerData": "1.0.0-*",
+    "StrangerData": "1.0.46",
     "System.Data.SqlClient": "4.1.0",
     "System.Linq": "4.3.0"
   },

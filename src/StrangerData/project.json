@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.46-*",
 
   "dependencies": {
     "Microsoft.Extensions.Configuration": "1.1.0",
