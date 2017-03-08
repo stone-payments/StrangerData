@@ -16,18 +16,25 @@
     "tags": [ "fixture", "data-builder", "fake-data", "test-data", "integration-test" ]
   },
 
-  "dependencies": {
-    "Microsoft.Extensions.Configuration": "1.1.0",
-    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0"
-  },
-
   "frameworks": {
     "dnxcore50": {
+      "dependencies": {
+        "Microsoft.Extensions.Configuration": "1.1.0",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0"
+      }
     },
     "net452": {
+      "frameworkAssemblies": {
+        "System.Configuration": "4.0.0.0"
+      }
     },
     "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.Extensions.Configuration": "1.1.0",
+        "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0"
+      }
     }
   }
 }

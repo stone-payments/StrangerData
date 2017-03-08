@@ -1,10 +1,20 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿#if NET452
+using System.Configuration;
+#else
+using Microsoft.Extensions.Configuration;
 using System.IO;
+#endif
 
 namespace StrangerData.Utils
 {
-    public class ConfigurationManager
+    public class ConfigurationProvider
     {
+#if NET452
+        public static string GetConnectionString(string name)
+        {
+            return ConfigurationManager.ConnectionStrings[name]?.ConnectionString;
+        }
+#else
         private static IConfigurationRoot _configuration;
 
         private static IConfigurationRoot LoadConfiguration()
@@ -25,5 +35,6 @@ namespace StrangerData.Utils
 
             return _configuration.GetConnectionString(name);
         }
+#endif
     }
 }

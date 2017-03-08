@@ -17,17 +17,25 @@
   },
 
   "dependencies": {
-    "StrangerData": "99.99.99",
-    "System.Data.SqlClient": "4.1.0",
-    "System.Linq": "4.3.0"
+    "StrangerData": "99.99.99"
   },
 
   "frameworks": {
     "dnxcore50": {
+      "dependencies": {
+        "System.Data.SqlClient": "4.1.0"
+      }
     },
     "net452": {
+      "dependencies": {
+        "System.Data.SqlClient": "4.3.0"
+      }
     },
     "netcoreapp1.0": {
+      "dependencies": {
+        "System.Data.SqlClient": "4.1.0",
+        "System.Linq": "4.3.0"
+      }
     }
   }
 }

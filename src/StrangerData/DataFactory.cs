@@ -15,9 +15,7 @@ namespace StrangerData
         {
             _tearDownStack = new Stack<Action>();
 
-            string connectionString = (ConfigurationManager.GetConnectionString(nameOrConnectionString) != null) ?
-                                            ConfigurationManager.GetConnectionString(nameOrConnectionString) :
-                                            nameOrConnectionString;
+            string connectionString = ConfigurationProvider.GetConnectionString(nameOrConnectionString) ?? nameOrConnectionString;
 
             _databaseDialect = DbDialectResolver.Resolve<TDialect>(connectionString);
         }
