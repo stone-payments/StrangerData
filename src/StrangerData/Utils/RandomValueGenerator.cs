@@ -6,6 +6,18 @@ namespace StrangerData.Utils
     {
         public static object ForColumn(TableColumnInfo columnInfo)
         {
+            try
+            {
+                return GenerateForColumn(columnInfo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Could not generate value for column Name=[{columnInfo.Name}] Type=[{columnInfo.ColumnType}]", ex);
+            }
+        }
+
+        private static object GenerateForColumn(TableColumnInfo columnInfo)
+        {
             switch (columnInfo.ColumnType)
             {
                 case ColumnType.String:
