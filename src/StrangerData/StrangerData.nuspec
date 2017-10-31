@@ -23,7 +23,6 @@
   </metadata>
   <files>
     <file src="bin/Release/net452/StrangerData.dll" target="lib\net452" />
-    <file src="bin/Release/dnxcore50/StrangerData.dll" target="lib\dnxcore50" />
     <file src="bin/Release/netcoreapp1.0/StrangerData.dll" target="lib\netcoreapp1.0" />
   </files>
 </package>
