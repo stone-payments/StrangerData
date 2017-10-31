@@ -81,6 +81,7 @@ namespace StrangerData.SqlServer
 				AS BIT) AS IS_UNIQUE
 			) PK
             WHERE OBJECT_ID in (OBJECT_ID(@tableName))
+            AND OUTCOLUMNS.IS_COMPUTED = 0
             ORDER BY OUTCOLUMNS.column_id
 ";
             var informationSchemaCmd = new SqlCommand(sql);
