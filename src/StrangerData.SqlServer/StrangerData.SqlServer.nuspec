@@ -22,7 +22,6 @@
   </metadata>
   <files>
     <file src="bin/Release/net452/StrangerData.SqlServer.dll" target="lib\net452" />
-    <file src="bin/Release/dnxcore50/StrangerData.SqlServer.dll" target="lib\dnxcore50" />
     <file src="bin/Release/netcoreapp1.0/StrangerData.SqlServer.dll" target="lib\netcoreapp1.0" />
   </files>
 </package>
