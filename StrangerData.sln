@@ -1,22 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "StrangerData", "src\StrangerData\StrangerData.xproj", "{4A57CF78-24AA-4FAB-8135-D38EF73431B3}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "StrangerData.SqlServer", "src\StrangerData.SqlServer\StrangerData.SqlServer.xproj", "{74E2141E-83BB-4084-995F-6926722D3C09}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2E7DA56A-5858-41A7-9E24-15C4F16725D1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "StrangerData.UnitTests", "test\StrangerData.UnitTests\StrangerData.UnitTests.xproj", "{8C6F1D94-FBB0-42A8-8C04-1B437158F968}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27D63A1A-217A-4B44-8E03-1D24FF54055D}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialect", "Dialect", "{3EE881EC-A9FE-40DF-ACFC-DAFD844013F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrangerData", "src\StrangerData\StrangerData.csproj", "{4A57CF78-24AA-4FAB-8135-D38EF73431B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrangerData.SqlServer", "src\StrangerData.SqlServer\StrangerData.SqlServer.csproj", "{74E2141E-83BB-4084-995F-6926722D3C09}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrangerData.UnitTests", "test\StrangerData.UnitTests\StrangerData.UnitTests.csproj", "{8C6F1D94-FBB0-42A8-8C04-1B437158F968}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,5 +40,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{74E2141E-83BB-4084-995F-6926722D3C09} = {3EE881EC-A9FE-40DF-ACFC-DAFD844013F9}
 		{8C6F1D94-FBB0-42A8-8C04-1B437158F968} = {2E7DA56A-5858-41A7-9E24-15C4F16725D1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E72050E-C711-483C-ABA0-DCC9941A32A0}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Automatically fills your testing database with random generated data.</Description>
+    <Copyright>Buy4 2016</Copyright>
+    <AssemblyTitle>StrangerData</AssemblyTitle>
+    <VersionPrefix>99.99.99</VersionPrefix>
+    <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
+    <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
+    <AssemblyName>StrangerData</AssemblyName>
+    <PackageId>StrangerData</PackageId>
+    <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
+    <PackageProjectUrl>https://github.com/stone-pagamentos/StrangerData</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE</PackageLicenseUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="System.Configuration" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>

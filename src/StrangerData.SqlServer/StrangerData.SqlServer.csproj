@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>MS SQL Server Dialect for StrangerData data generator.</Description>
+    <Copyright>Buy4 2016</Copyright>
+    <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
+    <VersionPrefix>99.99.99</VersionPrefix>
+    <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
+    <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
+    <AssemblyName>StrangerData.SqlServer</AssemblyName>
+    <PackageId>StrangerData.SqlServer</PackageId>
+    <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
+    <PackageProjectUrl>https://github.com/stone-pagamentos/StrangerData</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE</PackageLicenseUrl>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StrangerData\StrangerData.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+    <PackageReference Include="System.Data.SqlClient" Version="4.1.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>
