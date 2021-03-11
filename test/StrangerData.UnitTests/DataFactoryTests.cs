@@ -1,10 +1,10 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
+using StrangerData.UnitTests.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using FluentAssertions;
-using StrangerData.UnitTests.Lib;
-using System;
 
 namespace StrangerData.UnitTests
 {
@@ -233,6 +233,32 @@ namespace StrangerData.UnitTests
             {
                 o.WithValue("MyColumn1", "testString");
             });
+
+            _databaseDialect.VerifyAll();
+        }
+
+        [Fact]
+        public void CreateOne_TableWithLongTypeColumn_CreateRecord()
+        {
+            string testTable = $"dbo.MyTable{DateTime.Now.Ticks}";
+            string columnName = "LongTypeColumn";
+
+            TableColumnInfo[] tableSchemaInfo = new[] { new TableColumnInfo { ColumnType = ColumnType.Long, Name = columnName, Precision = 19 } };
+
+            _databaseDialect.Setup(t => t.GetTableSchemaInfo(testTable))
+                            .Returns(tableSchemaInfo)
+                            .Verifiable();
+
+            IDictionary<string, object> insertData = new Dictionary<string, object>() { { columnName, long.MaxValue } };
+
+            _databaseDialect.Setup(t => t.Insert(testTable, tableSchemaInfo, It.IsAny<IDictionary<string, object>>()))
+                .Callback<string, IEnumerable<TableColumnInfo>, IDictionary<string, object>>((table, schema, values) =>
+                {
+                    values[columnName].Should().BeOfType<long>();
+                })
+                .Returns(insertData);
+
+            _dataFactory.CreateOne(testTable);
 
             _databaseDialect.VerifyAll();
         }
