@@ -1,7 +1,5 @@
-﻿using StrangerData;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,6 +8,12 @@ namespace StrangerData.SqlServer
 {
     public class SqlServerDialect : DbDialect
     {
+        /// <summary>
+        /// SQL Server allows some character columns (VARCHAR and NVARCHAR) to have unlimited size (MAX).
+        /// This default value will be used as length for randomly generated strings to insert on these columns.
+        /// </summary>
+        private const int CharacterColumnsDefaultLength = 256;
+
         private readonly SqlConnection _sqlConnection;
 
         public SqlServerDialect(string connectionString)
@@ -112,7 +116,6 @@ namespace StrangerData.SqlServer
                     tableColumnInfo.ForeignKeyTable = (string)dr["ForeignKeyTable"];
                     tableColumnInfo.ForeignKeyColumn = dr["ForeignKeyColumn"] is DBNull ? null : (string)dr["ForeignKeyColumn"];
                     tableColumnInfo.IsUnique = Convert.ToBoolean(dr["IsUnique"]);
-
                     switch (((string)dr["ColumnType"]).ToUpper())
                     {
                         case "REAL":
@@ -124,11 +127,15 @@ namespace StrangerData.SqlServer
                             break;
                         case "CHAR":
                         case "NCHAR":
-                        case "NVARCHAR":
                         case "TEXT":
                         case "NTEXT":
+                            tableColumnInfo.ColumnType = ColumnType.String;
+                            break;
+                        case "NVARCHAR":
                         case "VARCHAR":
                             tableColumnInfo.ColumnType = ColumnType.String;
+                            if (tableColumnInfo.MaxLength == -1) // SQL Server uses -1 as length for unlimited columns (NVARCHAR(MAX) and VARCHAR(MAX))
+                                tableColumnInfo.MaxLength = SqlServerDialect.CharacterColumnsDefaultLength;
                             break;
                         case "ROWVERSION":
                         case "FILESTREAM":
