@@ -39,7 +39,7 @@ namespace StrangerData.Utils
                     return Any.Double(columnInfo.Precision, columnInfo.Scale);
                 case ColumnType.Long:
                     // generates a random long
-                    return Any.Long(1, (int)Math.Pow(10, columnInfo.Precision - 1));
+                    return Any.Long(1, (long)Math.Pow(10, columnInfo.Precision - 1));
                 case ColumnType.Boolean:
                     // generates a random boolean
                     return Any.Boolean();
