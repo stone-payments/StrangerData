@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>99.99.99</VersionPrefix>
+    <VersionPrefix>100.0.0</VersionPrefix>
     <TargetFramework>net452</TargetFramework>
     <AssemblyName>StrangerData.UnitTests</AssemblyName>
     <PackageId>StrangerData.UnitTests</PackageId>

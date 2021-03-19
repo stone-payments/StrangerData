@@ -4,7 +4,7 @@
     <Description>Automatically fills your testing database with random generated data.</Description>
     <Copyright>Buy4 2016</Copyright>
     <AssemblyTitle>StrangerData</AssemblyTitle>
-    <VersionPrefix>99.99.99</VersionPrefix>
+    <VersionPrefix>100.0.0</VersionPrefix>
     <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
     <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
     <AssemblyName>StrangerData</AssemblyName>

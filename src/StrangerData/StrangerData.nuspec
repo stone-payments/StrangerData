@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>StrangerData</id>
-    <version>$version$</version>
+    <version>100.0.0</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
