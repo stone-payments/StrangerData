@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("StrangerData.UnitTests")]
 namespace StrangerData.Generator
 {
     internal class TableGenerator

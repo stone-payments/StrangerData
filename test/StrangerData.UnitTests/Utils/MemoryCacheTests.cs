@@ -8,10 +8,6 @@ namespace StrangerData.UnitTests.Utils
 {
     public class MemoryCacheTests
     {
-        public MemoryCacheTests()
-        {
-        }
-
         [Fact]
         public void TryGetFromCache_BothKeysNotExists_InvokeFuncAndReturnFuncValue()
         {
@@ -33,8 +29,9 @@ namespace StrangerData.UnitTests.Utils
         }
 
         [Fact]
-        public void TryGetFromCache_SecondaryKeyNotExists_ReturnNewValue()
+        public void TryGetFromCache_SecondaryKeyNotExists_InvokeFuncAndReturnFuncValue()
         {
+            // Arrange
             string expected = Any.String();
 
             Mock<Func<object>> funcMock = new Mock<Func<object>>();
@@ -54,8 +51,9 @@ namespace StrangerData.UnitTests.Utils
         }
 
         [Fact]
-        public void TryGetFromCache_BothKeysExists_ReturnPreviousValue()
+        public void TryGetFromCache_BothKeysExists_NotInvokeFuncAndReturnExistentValue()
         {
+            // Arrange
             Mock<Func<object>> funcMock = new Mock<Func<object>>();
             funcMock.Setup(f => f()).Returns(Any.String());
 
