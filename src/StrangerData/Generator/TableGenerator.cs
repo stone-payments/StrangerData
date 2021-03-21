@@ -1,10 +1,7 @@
-﻿using StrangerData;
-using StrangerData.Utils;
+﻿using StrangerData.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrangerData.Generator
 {
@@ -24,10 +21,7 @@ namespace StrangerData.Generator
             _depth = depth;
 
             // Try get the column info for this table in memory cache, else, get from dialect and store on cache
-            _tableColumnInfoList = MemoryCache.TryGetFromCache<IEnumerable<TableColumnInfo>>(tableName, () =>
-            {
-                return _dbDialect.GetTableSchemaInfo(tableName);
-            });
+            _tableColumnInfoList = MemoryCache.TryGetFromCache<IEnumerable<TableColumnInfo>>(_dbDialect.ConnectionString, tableName, () => this._dbDialect.GetTableSchemaInfo(tableName));
         }
 
         public TableGenerator(IDbDialect dbDialect, string tableName)
