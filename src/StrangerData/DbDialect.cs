@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StrangerData
 {
     public abstract class DbDialect : IDbDialect
     {
-        public DbDialect(string connectionString)
+        public string ConnectionString { get; }
+
+        protected DbDialect(string connectionString)
         {
+            this.ConnectionString = connectionString;
         }
 
         public virtual void DeleteAll(Stack<RecordIdentifier> recordIdentifiers)
