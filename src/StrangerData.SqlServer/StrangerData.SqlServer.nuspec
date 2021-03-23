@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>StrangerData.SqlServer</id>
-    <version>100.0.0</version>
+    <version>100.0.1</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
@@ -12,7 +12,7 @@
     <summary>MS SQL Server Dialect for StrangerData data generator.</summary>
     <description>MS SQL Server Dialect for StrangerData data generator.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2016</copyright>
+    <copyright>StoneCo 2021</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
     <dependencies>
       <dependency id="StrangerData" version="1.0.56" />
