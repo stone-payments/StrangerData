@@ -14,6 +14,8 @@ namespace StrangerData.SqlServer
         /// </summary>
         private const int CharacterColumnsDefaultLength = 256;
 
+        private readonly string[] ReservedWords = { "Key" };
+
         private readonly SqlConnection _sqlConnection;
 
         public SqlServerDialect(string connectionString)
@@ -106,7 +108,8 @@ namespace StrangerData.SqlServer
                 {
                     var tableColumnInfo = new TableColumnInfo();
 
-                    tableColumnInfo.Name = (string)dr["Name"];
+                    var columnName = (string)dr["Name"];
+                    tableColumnInfo.Name = ReservedWords.Contains(columnName, StringComparer.OrdinalIgnoreCase) ? $"[{columnName}]" : columnName;
                     tableColumnInfo.Precision = Convert.ToInt32(dr["Precision"]);
                     tableColumnInfo.Scale = Convert.ToInt32(dr["Scale"]);
                     tableColumnInfo.MaxLength = Convert.ToInt32(dr["MaxLength"]);
