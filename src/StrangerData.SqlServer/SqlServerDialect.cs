@@ -1,6 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#if NET452
 using System.Data.SqlClient;
+#elif NET8_0_OR_GREATER
+using Microsoft.Data.SqlClient;
+#endif
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 

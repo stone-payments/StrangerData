@@ -2,26 +2,26 @@
 <package>
   <metadata>
     <id>StrangerData.SqlServer</id>
-    <version>100.0.1</version>
+    <version>100.1.0</version>
     <authors>Pedro Henrique B. Fernandes</authors>
     <owners>Buy4</owners>
     <projectUrl>https://github.com/stone-pagamentos/StrangerData</projectUrl>
-    <licenseUrl>https://raw.githubusercontent.com/stone-pagamentos/StrangerData/master/LICENSE</licenseUrl>
+    <license>https://raw.githubusercontent.com/stone-pagamentos/StrangerData/master/LICENSE</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <title>StrangerData - SQL Server Dialect</title>
     <summary>MS SQL Server Dialect for StrangerData data generator.</summary>
     <description>MS SQL Server Dialect for StrangerData data generator.</description>
     <releaseNotes></releaseNotes>
-    <copyright>StoneCo 2021</copyright>
+    <copyright>StoneCo 2024</copyright>
     <tags>fixture data-builder fake-data test-data integration-test</tags>
     <dependencies>
-      <dependency id="StrangerData" version="1.0.56" />
+      <dependency id="StrangerData" version="100.1.0" />
       <dependency id="System.Data.SqlClient" version="4.1.0" />
       <dependency id="System.Linq" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>
     <file src="bin/Release/net452/StrangerData.SqlServer.dll" target="lib\net452" />
-    <file src="bin/Release/netcoreapp1.0/StrangerData.SqlServer.dll" target="lib\netcoreapp1.0" />
+    <file src="bin/Release/net8.0/StrangerData.SqlServer.dll" target="lib\net8.0" />
   </files>
 </package>

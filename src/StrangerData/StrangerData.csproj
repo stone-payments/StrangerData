@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <Description>Automatically fills your testing database with random generated data.</Description>
-    <Copyright>StoneCo 2021</Copyright>
+    <Copyright>StoneCo 2024</Copyright>
     <AssemblyTitle>StrangerData</AssemblyTitle>
-    <VersionPrefix>100.0.1</VersionPrefix>
+    <VersionPrefix>100.1.0</VersionPrefix>
     <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
-    <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
+    <TargetFrameworks>net452;net8.0</TargetFrameworks>
     <AssemblyName>StrangerData</AssemblyName>
     <PackageId>StrangerData</PackageId>
     <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
@@ -23,10 +23,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.2" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
