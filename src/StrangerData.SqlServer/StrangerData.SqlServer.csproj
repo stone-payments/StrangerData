@@ -6,7 +6,7 @@
     <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
     <VersionPrefix>100.1.0</VersionPrefix>
     <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
-    <TargetFrameworks>net452;net8.0</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard2.0;net8.0</TargetFrameworks>
     <AssemblyName>StrangerData.SqlServer</AssemblyName>
     <PackageId>StrangerData.SqlServer</PackageId>
     <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
@@ -26,6 +26,11 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">

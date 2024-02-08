@@ -1,7 +1,7 @@
-﻿#if NET452
-using System.Data.SqlClient;
-#elif NET8_0_OR_GREATER
+﻿#if NET8_0_OR_GREATER
 using Microsoft.Data.SqlClient;
+#else
+using System.Data.SqlClient;
 #endif
 using System;
 using System.Collections.Generic;
