@@ -1,17 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- NuGet properties -->
+    <Id>StrangerData</Id>
+    <Version>101.0.0</Version>
+    <Title>StrangerData</Title>
+    <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
+    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/stone-pagamentos/StrangerData</PackageProjectUrl>
     <Description>MS SQL Server Dialect for StrangerData data generator.</Description>
     <Copyright>StoneCo 2024</Copyright>
-    <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
-    <VersionPrefix>100.1.0</VersionPrefix>
-    <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
-    <TargetFrameworks>net452;netstandard2.0;net8.0</TargetFrameworks>
-    <AssemblyName>StrangerData.SqlServer</AssemblyName>
-    <PackageId>StrangerData.SqlServer</PackageId>
     <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
-    <PackageProjectUrl>https://github.com/stone-pagamentos/StrangerData</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE</PackageLicenseUrl>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    <!-- NuGet properties -->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
+    <AssemblyName>StrangerData.SqlServer</AssemblyName>
+    <TargetFrameworks>net452;netstandard2.0;net8.0</TargetFrameworks>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -20,7 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\StrangerData\StrangerData.csproj" />
   </ItemGroup>
-
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
