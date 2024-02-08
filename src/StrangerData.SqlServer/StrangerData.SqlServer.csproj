@@ -1,17 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>MS SQL Server Dialect for StrangerData data generator.</Description>
-    <Copyright>StoneCo 2021</Copyright>
-    <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
-    <VersionPrefix>100.0.1</VersionPrefix>
+    <!-- NuGet properties -->
+    <Id>StrangerData.SqlServer</Id>
+    <Version>101.0.0</Version>
+    <Title>StrangerData</Title>
     <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
-    <TargetFrameworks>net452;netcoreapp1.0</TargetFrameworks>
-    <AssemblyName>StrangerData.SqlServer</AssemblyName>
-    <PackageId>StrangerData.SqlServer</PackageId>
-    <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
+    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/stone-pagamentos/StrangerData</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>MS SQL Server Dialect for StrangerData data generator.</Description>
+    <Copyright>StoneCo 2024</Copyright>
+    <PackageTags>fixture;data-builder;fake-data;test-data;integration-test</PackageTags>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+    <!-- NuGet properties -->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyTitle>StrangerData - SQL Server Dialect</AssemblyTitle>
+    <AssemblyName>StrangerData.SqlServer</AssemblyName>
+    <TargetFrameworks>net452;netstandard2.0;net8.0</TargetFrameworks>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -21,15 +28,19 @@
     <ProjectReference Include="..\StrangerData\StrangerData.csproj" />
   </ItemGroup>
 
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <PackageReference Include="System.Data.SqlClient" Version="4.1.0" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
   </ItemGroup>
 
