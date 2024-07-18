@@ -1,0 +1,52 @@
+trigger:
+  - "*"
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+jobs:
+  - job: buildNugetPackage
+    displayName: "Build packages"
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+      sourceDirectory: $(System.DefaultWorkingDirectory)
+      buildConfiguration: 'Release'
+      testResultsDirectory: $(System.DefaultWorkingDirectory)/TestResults
+      coverageSummaryFile: $(testResultsDirectory)/**/coverage.cobertura.xml
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: "Restore solution"
+        inputs:
+          command: 'restore'
+          projects: '$(sourceDirectory)'
+          feedsToUse: 'select'
+          vstsFeed: 'ProcessorArtifacts'
+
+      - script: dotnet test $(sourceDirectory) --configuration Debug --no-restore --logger trx
+        displayName: 'Run tests'
+
+      - task: PublishTestResults@2
+        displayName: "Publish test results"
+        inputs:
+          testResultsFormat: 'VSTest'
+          testResultsFiles: '**/*.trx'
+          searchFolder: '$(testResultsDirectory)'
+          failTaskOnFailedTests: true
+          buildConfiguration: '$(buildConfiguration)'
+
+      - task: PublishCodeCoverageResults@1
+        displayName: "Publish code coverage"
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: $(coverageSummaryFile)
+
+      - powershell: |
+          $cmd = 'dotnet pack --configuration $(buildConfiguration) --output "$(Build.ArtifactStagingDirectory)" --verbosity Normal'
+          If ('$(ShouldOverridePackageVersion)' -Eq 'true') { $cmd += ' -p:PackageVersion=$(OverridenPackageVersion)' }
+          Write-Output "ShouldOverridePackageVersion: $(ShouldOverridePackageVersion)";
+          Write-Output "$cmd"
+          Invoke-Expression $cmd;
+        displayName: 'Pack projects'
+
+      - publish: "$(Build.ArtifactStagingDirectory)"
+        artifact: drop
+        displayName: 'Publish Artifacts: drop'
