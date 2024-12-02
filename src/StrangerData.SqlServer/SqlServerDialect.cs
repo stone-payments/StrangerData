@@ -18,8 +18,6 @@ namespace StrangerData.SqlServer
         /// </summary>
         private const int CharacterColumnsDefaultLength = 256;
         
-        private readonly string[] ReservedWords = { "Key" };
-
         private readonly SqlConnection _sqlConnection;
 
         public SqlServerDialect(string connectionString)
@@ -199,7 +197,7 @@ namespace StrangerData.SqlServer
 
             StringBuilder insertStatementBuilder = new StringBuilder()
                                                     .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
-                                                    .AppendFormat("({0})", string.Join(",", GetSanitizedKeys(values)))
+                                                    .AppendFormat("({0})", string.Join(",", values.Keys.Select(key => $"[{key}]" )))
                                                     .AppendFormat(" VALUES ({0});", string.Join(",", values.Keys.Select(c => "@" + c)));
             // .AppendFormat(" SELECT SCOPE_IDENTITY();")
             //  .ToString();
@@ -305,9 +303,6 @@ namespace StrangerData.SqlServer
             else
                 return string.Format("[{0}]", tableName);
         }
-
-        private IEnumerable<string> GetSanitizedKeys(IDictionary<string, object> values) =>
-            values.Keys.Select(key => ReservedWords.Contains(key) ? $"[{key}]" : key);
 
         public override void Dispose()
         {
