@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StrangerData.SqlServer
 {
@@ -17,7 +18,7 @@ namespace StrangerData.SqlServer
         /// This default value will be used as length for randomly generated strings to insert on these columns.
         /// </summary>
         private const int CharacterColumnsDefaultLength = 256;
-
+        
         private readonly SqlConnection _sqlConnection;
 
         public SqlServerDialect(string connectionString)
@@ -195,10 +196,11 @@ namespace StrangerData.SqlServer
         {
             bool hasIdentity = tableSchemaInfo.Any(t => t.IsIdentity);
 
+            var sanitizedValues = SanitizeDictionaryKeys(values);
             StringBuilder insertStatementBuilder = new StringBuilder()
                                                     .AppendFormat("INSERT INTO {0}", SanitizeTableName(tableName))
-                                                    .AppendFormat("({0})", string.Join(",", values.Keys))
-                                                    .AppendFormat(" VALUES ({0});", string.Join(",", values.Keys.Select(c => "@" + c)));
+                                                    .AppendFormat("({0})", string.Join(",", sanitizedValues.Keys.Select(key => $"[{key}]" )))
+                                                    .AppendFormat(" VALUES ({0});", string.Join(",", sanitizedValues.Keys.Select(c => "@" + c)));
             // .AppendFormat(" SELECT SCOPE_IDENTITY();")
             //  .ToString();
 
@@ -210,13 +212,13 @@ namespace StrangerData.SqlServer
             SqlCommand insertCmd = new SqlCommand(insertStatementBuilder.ToString(), _sqlConnection);
             insertCmd.CommandType = System.Data.CommandType.Text;
 
-            foreach (string column in values.Keys)
+            foreach (string column in sanitizedValues.Keys)
             {
                 insertCmd.Parameters.Add(new SqlParameter
                 {
                     Direction = System.Data.ParameterDirection.Input,
                     ParameterName = "@" + column,
-                    Value = values[column] ?? DBNull.Value
+                    Value = sanitizedValues[column] ?? DBNull.Value
                 });
             }
 
@@ -224,14 +226,14 @@ namespace StrangerData.SqlServer
             {
                 string identityColumn = tableSchemaInfo.First(t => t.IsIdentity).Name;
 
-                values[identityColumn] = insertCmd.ExecuteScalar();
+                sanitizedValues[identityColumn] = insertCmd.ExecuteScalar();
             }
             else
             {
                 insertCmd.ExecuteNonQuery();
             }
 
-            return values;
+            return sanitizedValues;
         }
 
         public override bool RecordExists(string tableName, string columnName, object value)
@@ -302,6 +304,19 @@ namespace StrangerData.SqlServer
                 return string.Format("[{0}].[{1}]", tableName.Split('.')[0], tableName.Split('.')[1]);
             else
                 return string.Format("[{0}]", tableName);
+        }
+        
+        private static IDictionary<string, object> SanitizeDictionaryKeys(IDictionary<string, object> valuesDict)
+        {
+            var sanitizedDict = new Dictionary<string, object>();
+            var acceptedCharactersRegex = new Regex(@"[^a-zA-Z0-9_\-]");
+            foreach (var kvPair in valuesDict)
+            {
+                var sanitizedKey = acceptedCharactersRegex.Replace(kvPair.Key, "");
+                sanitizedDict[sanitizedKey] = kvPair.Value;
+            }
+
+            return sanitizedDict;
         }
 
         public override void Dispose()
