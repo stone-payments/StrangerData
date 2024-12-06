@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- NuGet properties -->
     <Id>StrangerData.SqlServer</Id>
-    <Version>101.0.0</Version>
+    <Version>101.0.1</Version>
     <Title>StrangerData</Title>
     <Authors>Pedro Henrique B. Fernandes;Diego Anckizes;Mateus Dalepiane</Authors>
     <PackageLicenseUrl>https://github.com/stone-pagamentos/StrangerData/master/LICENSE</PackageLicenseUrl>
